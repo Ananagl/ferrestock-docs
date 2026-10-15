@@ -19,7 +19,7 @@ Cada incremento incluye el backend (entidad, repositorio, servicio, controlador,
 |---|---|---|---|---|
 | 1 ✅ | Autenticación: login, "Recordarme", logout, bloqueo, cambio de contraseña; auditoría base y API de consulta de auditoría; layout con menú por rol | RF-AUT-001 a 005, 007, 008; RF-AUD-001, RF-AUD-002 (API) | CA-AUT-01 a 06, 08 | — |
 | 2 ✅ | Usuarios (ADMIN), con cierre de sesiones al desactivar, cambiar rol o restablecer | RF-AUT-006 | CA-AUT-07 | 1 |
-| 3 | Categorías y productos, cambio de precio | RF-PRO-001 a 009, RF-PRE | CA-PRO-01 a 10, CA-PRE-01, 02 | 1 |
+| 3 ✅ | Categorías y productos, cambio de precio (CA-PRO-07 y 09 se verifican en los incrementos 7 y 8) | RF-PRO-001 a 009, RF-PRE, RF-COS-002 (API) | CA-PRO-01 a 06, 08, 10, CA-PRE-01, 02 | 1 |
 | 4 | Terceros (validación de NIT) | RF-TER | CA-TER-01 a 04 | 1 |
 | 5 | Inventario: `MovimientoInventarioService`, existencias, kardex, consecutivos | RF-INV, RF-COS-001, 002, RF-DOC-001 | CA-INV-01, 02 | 3 |
 | 6 | Ajustes (incluido el inventario inicial) | RF-AJU | CA-AJU-01 a 04 | 5 |
