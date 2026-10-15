@@ -1,0 +1,5 @@
+# Nombre: .gitignore | Descripción: el repositorio de documentación no incluye los repositorios de código | Creación: 2026-10-15
+# Autores: Ana Sofía Nagles García, María Mercedes Rincón Valencia, Juan David Camacho Tapiero | Versión: 0.1.0
+ferrestock-backend/
+ferrestock-frontend/
+.DS_Store
