@@ -5,7 +5,7 @@
 # Fecha de creación:      2026-10-15
 # Fecha de actualización: 2026-10-15
 # Autores:                Ana Sofía Nagles García, María Mercedes Rincón Valencia, Juan David Camacho Tapiero
-# Versión:                0.13.0
+# Versión:                0.13.1
 #
 # Uso: python3 scripts/taiga/cargar_backlog.py                      (simulación)
 #      TAIGA_USUARIO=ananagls python3 scripts/taiga/cargar_backlog.py --aplicar   (pide la clave sin mostrarla)
@@ -14,6 +14,7 @@ import getpass
 import json
 import os
 import re
+import urllib.error
 import urllib.request
 
 API = os.environ.get("TAIGA_URL", "https://api.taiga.io") + "/api/v1"
@@ -58,7 +59,13 @@ def main():
         print(f"\n{len(modulos)} historias y {sum(len(m['requisitos']) for m in modulos)} tareas. Use --aplicar para crearlas.")
         return
     usuario = os.environ.get("TAIGA_USUARIO") or input("Usuario de Taiga: ")
-    token = llamar("POST", "/auth", {"type": "normal", "username": usuario, "password": getpass.getpass("Clave de Taiga: ")})["auth_token"]
+    try:
+        token = llamar("POST", "/auth", {"type": "normal", "username": usuario, "password": getpass.getpass("Clave de Taiga: ")})["auth_token"]
+    except urllib.error.HTTPError as e:
+        if e.code in (400, 401):
+            raise SystemExit("Taiga rechazó el usuario o la clave. Si la cuenta se creó con GitHub o Google, "
+                             "cree una contraseña con '¿Olvidaste tu contraseña?' en la pantalla de ingreso de Taiga.")
+        raise
     proyecto = llamar("GET", f"/projects/by_slug?slug={a.slug}", token=token)
     pid = proyecto["id"]
     hecho_us = next(s["id"] for s in proyecto["us_statuses"] if s["is_closed"])
