@@ -1,0 +1,162 @@
+%% Nombre: modelo-er.mmd
+%% Descripción: Diagrama entidad-relación de FerreStock (PostgreSQL).
+%% Fecha de creación: 2026-10-14
+%% Fecha de actualización: 2026-10-14
+%% Autores: Ana Sofía Nagles García, María Mercedes Rincón Valencia, Juan David Camacho Tapiero
+%% Versión: 0.1.0
+erDiagram
+    USUARIO ||--o{ AUDITORIA : "genera"
+    USUARIO ||--o{ MOVIMIENTO_INVENTARIO : "registra"
+    CATEGORIA ||--o{ PRODUCTO : "clasifica"
+    PRODUCTO ||--o{ MOVIMIENTO_INVENTARIO : "tiene kardex"
+    PRODUCTO ||--o{ COMPRA_LINEA : "se compra en"
+    PRODUCTO ||--o{ VENTA_LINEA : "se vende en"
+    PRODUCTO ||--o{ DEVOLUCION_LINEA : "se devuelve en"
+    PRODUCTO ||--o{ AJUSTE : "se ajusta en"
+    TERCERO ||--o{ COMPRA : "provee"
+    TERCERO ||--o{ VENTA : "compra"
+    TERCERO ||--o{ DEVOLUCION : "devuelve"
+    COMPRA ||--|{ COMPRA_LINEA : "contiene"
+    VENTA ||--|{ VENTA_LINEA : "contiene"
+    VENTA |o--o{ DEVOLUCION : "origen opcional"
+    DEVOLUCION ||--|{ DEVOLUCION_LINEA : "contiene"
+    VENTA_LINEA |o--o{ DEVOLUCION_LINEA : "origen opcional"
+
+    USUARIO {
+        bigint id PK
+        varchar nombre_usuario UK
+        varchar nombre_completo
+        varchar password_hash
+        varchar rol
+        boolean activo
+        smallint intentos_fallidos
+        timestamptz bloqueado_hasta
+        boolean debe_cambiar_password
+        varchar idioma
+    }
+    CATEGORIA {
+        bigint id PK
+        varchar nombre UK
+        boolean activa
+    }
+    PRODUCTO {
+        bigint id PK
+        varchar codigo UK
+        varchar nombre
+        varchar descripcion
+        bigint categoria_id FK
+        varchar unidad_medida
+        boolean permite_fraccion
+        numeric precio_venta
+        numeric existencias
+        numeric costo_promedio
+        varchar estado
+        bigint version
+    }
+    TERCERO {
+        bigint id PK
+        varchar tipo_persona
+        varchar tipo_documento
+        varchar numero_documento
+        char digito_verificacion
+        varchar nombre
+        boolean es_cliente
+        boolean es_proveedor
+        boolean activo
+    }
+    COMPRA {
+        bigint id PK
+        varchar consecutivo UK
+        bigint proveedor_id FK
+        numeric total
+        varchar estado
+    }
+    COMPRA_LINEA {
+        bigint id PK
+        bigint compra_id FK
+        bigint producto_id FK
+        numeric cantidad
+        numeric costo_unitario
+        numeric subtotal
+    }
+    VENTA {
+        bigint id PK
+        varchar consecutivo UK
+        bigint cliente_id FK
+        numeric total
+        varchar medio_pago
+        numeric valor_recibido
+        numeric cambio
+        varchar estado
+    }
+    VENTA_LINEA {
+        bigint id PK
+        bigint venta_id FK
+        bigint producto_id FK
+        numeric cantidad
+        numeric precio_unitario
+        numeric costo_unitario
+        numeric cantidad_devuelta
+        numeric subtotal
+    }
+    DEVOLUCION {
+        bigint id PK
+        varchar consecutivo UK
+        bigint cliente_id FK
+        bigint venta_id FK
+        varchar motivo
+    }
+    DEVOLUCION_LINEA {
+        bigint id PK
+        bigint devolucion_id FK
+        bigint producto_id FK
+        bigint venta_linea_id FK
+        numeric cantidad
+        varchar resultado
+        numeric costo_unitario
+    }
+    AJUSTE {
+        bigint id PK
+        varchar consecutivo UK
+        bigint producto_id FK
+        varchar tipo
+        numeric cantidad
+        numeric costo_unitario
+        varchar motivo
+    }
+    MOVIMIENTO_INVENTARIO {
+        bigint id PK
+        bigint producto_id FK
+        varchar tipo
+        varchar naturaleza
+        numeric cantidad
+        numeric costo_unitario
+        numeric saldo_resultante
+        numeric costo_promedio_anterior
+        numeric costo_promedio_resultante
+        varchar documento_tipo
+        bigint documento_id
+        bigint usuario_id FK
+    }
+    CONSECUTIVO {
+        varchar tipo_documento PK
+        varchar prefijo
+        bigint siguiente
+    }
+    AUDITORIA {
+        bigint id PK
+        bigint usuario_id FK
+        varchar nombre_usuario
+        timestamptz fecha
+        varchar accion
+        varchar descripcion
+    }
+    REGISTRO_ERROR {
+        bigint id PK
+        uuid correlacion UK
+        timestamptz fecha
+        varchar ruta
+        varchar tipo
+        varchar mensaje
+        varchar taiga_ref
+    }
