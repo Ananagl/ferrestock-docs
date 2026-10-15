@@ -9,7 +9,7 @@
 | **Fecha de actualización** | 2026-10-15 |
 | **Autores** | Ana Sofía Nagles García · María Mercedes Rincón Valencia · Juan David Camacho Tapiero |
 | **Versión** | 0.1.0 |
-| **Estado** | Implementado; pendiente de publicar en GitHub y de configurar los secretos |
+| **Estado** | Desplegado (2026-10-15) |
 
 ---
 
@@ -67,3 +67,22 @@ TAIGA_USUARIO=ananagls TAIGA_PROYECTO_ID=1811096 REPO=prueba RAMA=develop COMMIT
 | `scripts/repositorio/liberar.sh 1.0.0` | `develop` → `main` y etiqueta `v1.0.0` |
 | `ferrestock-backend/scripts/{arrancar,compilar,probar,mutacion,verificar_encabezados}.sh` | Scripts del backend (Fase 3) |
 | `ferrestock-*/scripts/despliegue/desplegar.sh` | Imagen, despliegue y verificación de salud (lo usa el pipeline) |
+
+## 5. Despliegue en producción (gratuito)
+
+| Pieza | Servicio | Dirección |
+|---|---|---|
+| Sistema (frontend + proxy `/api`) | Render, plan gratuito (Docker) | https://ferrestock-wtrq.onrender.com |
+| Backend | Render, plan gratuito (Docker) | https://ferrestock-backend-4hb3.onrender.com (salud: `/actuator/health`) |
+| Base de datos | Neon, plan gratuito (PostgreSQL 17, us-west-2) | proyecto `ferrestock` |
+| Repositorios | GitHub (privados) | `Ananagl/ferrestock-backend`, `Ananagl/ferrestock-frontend`, `Ananagl/ferrestock-docs` |
+
+- **Prueba de humo (2026-10-15):** el backend responde `UP`, el frontend responde 200 y el proxy entrega la cookie `XSRF-TOKEN` en el dominio del frontend.
+- **Primer ingreso:** usuario `admin` con la clave temporal guardada en `ferrestock-backend/.env` (`FS_PROD_ADMIN_CLAVE_INICIAL`, no se sube al repositorio). El sistema obliga a cambiarla.
+- **Plan gratuito:** Render apaga el servicio tras 15 minutos sin uso; la primera visita tarda cerca de un minuto.
+- **Despliegue automático solo si las pruebas pasan:** en Render, `autoDeploy` está desactivado. Para que el pipeline despliegue, se copia el *Deploy Hook* de cada servicio (Settings → Deploy Hook) al secreto `FS_DEPLOY_HOOK` del repositorio correspondiente.
+
+### Defectos encontrados por el pipeline en GitHub (v1.0.2)
+
+1. **Imagen de GHCR:** el nombre debe ir en minúsculas (`Ananagl` → `ananagl`).
+2. **Accesibilidad:** en móvil, la tabla desplazable del comprobante no era alcanzable con el teclado (axe: `scrollable-region-focusable`). La matriz completa del CI pasó 227 de 228 pruebas y esa última quedó corregida.

@@ -44,6 +44,8 @@ Esta carpeta es el repositorio de documentación; `ferrestock-backend` y `ferres
 
 ## Estado de las fases
 
+**Sistema en línea:** https://ferrestock-wtrq.onrender.com (plan gratuito: la primera visita puede tardar un minuto).
+
 | Fase | Contenido | Estado |
 |---|---|---|
 | 1 | Análisis y requisitos | Aprobada (v0.3.0) |
