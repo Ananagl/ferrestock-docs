@@ -1,0 +1,496 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><title>FerreStock — Prompts de ingeniería</title>
+<style>
+@page { size: A4; margin: 18mm 16mm 18mm 16mm; }
+body { font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; color:#1f2328; font-size:10.5pt; line-height:1.45; }
+.portada { height: 250mm; display:flex; flex-direction:column; justify-content:center; page-break-after: always; }
+.portada h1 { font-size:30pt; margin:0 0 6px; color:#8a4b14; }
+.portada .sub { font-size:14pt; color:#444; margin-bottom:28px; }
+.meta { border-collapse:collapse; width:100%; font-size:10pt; }
+.meta th { text-align:left; width:32%; background:#f6f1ea; padding:6px 8px; border:1px solid #e3d8c8; }
+.meta td { padding:6px 8px; border:1px solid #e3d8c8; }
+h1.sec { margin: 10px 0 8px; color:#8a4b14; font-size:17pt; border-bottom:2px solid #e3d8c8; padding-bottom:4px; }
+.intro p, .intro li { margin: 2px 0; font-size: 10pt; }
+ol.indice { columns: 1; padding-left: 18px; }
+ol.indice li { margin: 0; font-size: 9.5pt; }
+.intro ul { margin: 2px 0 6px; }
+.chip { display:inline-block; font-size:8pt; background:#f6f1ea; color:#8a4b14; border:1px solid #e3d8c8; border-radius:10px; padding:1px 8px; margin-right:6px; }
+.prompt { page-break-inside: avoid; margin: 0 0 18px; padding-top: 4px; }
+.prompt.grande { page-break-inside: auto; }
+.cab { display:flex; align-items:center; gap:6px; }
+.num { font-weight:700; color:#fff; background:#8a4b14; border-radius:4px; padding:1px 6px; font-size:9pt; }
+.prompt h2 { font-size:13pt; margin:6px 0 4px; }
+.obj { margin: 0 0 6px; color:#333; }
+pre { white-space: pre-wrap; word-wrap: break-word; background:#faf8f5; border-left:4px solid #b8692a; padding:10px 12px; font-family: "SF Mono", Menlo, Consolas, monospace; font-size:8.8pt; line-height:1.4; margin:0 0 6px; }
+.prompt table { border-collapse:collapse; width:100%; font-size:9pt; }
+.prompt th { text-align:left; width:22%; background:#f6f1ea; padding:4px 6px; border:1px solid #e3d8c8; vertical-align:top; }
+.prompt td { padding:4px 6px; border:1px solid #e3d8c8; }
+.salto { page-break-before: always; }
+</style></head><body>
+<div class="portada">
+<h1>FerreStock</h1>
+<div class="sub">Prompts de ingeniería usados para construir el sistema, de la documentación al despliegue</div>
+<table class="meta">
+<tr><th>Nombre</th><td>FerreStock_prompts_de_ingenieria.pdf</td></tr>
+<tr><th>Descripción</th><td>Prompts usados con un asistente de IA en cada fase del proyecto (análisis, diseño, preparación, implementación por incrementos, pruebas, CI/CD con Taiga, métricas y monitoreo), con su objetivo, entregables y verificación.</td></tr>
+<tr><th>Fecha de creación</th><td>2026-10-15</td></tr>
+<tr><th>Fecha de actualización</th><td>2026-10-15</td></tr>
+<tr><th>Autores</th><td>Ana Sofía Nagles García · María Mercedes Rincón Valencia · Juan David Camacho Tapiero</td></tr>
+<tr><th>Versión</th><td>1.0.0</td></tr>
+<tr><th>Sistema en línea</th><td>https://ferrestock-wtrq.onrender.com</td></tr>
+</table>
+</div>
+<div class="intro">
+<h1 class="sec">Cómo se usaron los prompts</h1>
+<p>Cada prompt sigue la misma estructura:</p>
+<ul>
+<li><b>Contexto:</b> el prompt 01 se envía al inicio de cada sesión.</li>
+<li><b>Tarea</b> concreta.</li>
+<li><b>Restricciones</b> del dominio.</li>
+<li><b>Entregables</b> con nombre de archivo.</li>
+<li><b>Criterio de verificación.</b></li>
+</ul>
+<p>Las reglas de trabajo con el asistente fueron:</p>
+<ul>
+<li><b>Trabajo por fases con aprobación:</b> la IA no avanza sin la aprobación del equipo. Desde el incremento 6 se aprobó un "modo bloque" para acelerar.</li>
+<li><b>Nada sin evidencia:</b> todo resultado se reporta con las pruebas ejecutadas y sus números reales; lo que no se pudo ejecutar se declara.</li>
+<li><b>Las ambigüedades se registran:</b> si una regla no está en los documentos, se anota como decisión pendiente (DP) con una propuesta.</li>
+<li><b>Seguridad de credenciales:</b> las claves nunca se escriben en el chat; van como secretos de GitHub o se escriben en la terminal sin mostrarse.</li>
+<li><b>Revisión humana:</b> el equipo revisó y aprobó cada fase; la IA propuso, implementó y verificó.</li>
+</ul>
+<h1 class="sec">Índice</h1>
+<ol class="indice"><li><span class="chip">Contexto</span> Prompt de contexto (se envía al inicio de cada sesión)</li><li><span class="chip">Fase 1 · Análisis</span> Fase 1 — Visión, alcance e interesados</li><li><span class="chip">Fase 1 · Análisis</span> Fase 1 — Requisitos, reglas de negocio y casos de uso</li><li><span class="chip">Fase 1 · Análisis</span> Fase 1 — Escenarios de aceptación, riesgos y trazabilidad</li><li><span class="chip">Fase 2 · Diseño</span> Fase 2 — Arquitectura y decisiones técnicas</li><li><span class="chip">Fase 2 · Diseño</span> Fase 2 — Modelo de datos e inventario/costos</li><li><span class="chip">Fase 2 · Diseño</span> Fase 2 — API REST, seguridad y frontend</li><li><span class="chip">Fase 2 · Diseño</span> Fase 2 — Repositorios, pruebas y entrega</li><li><span class="chip">Fase 3 · Preparación</span> Fase 3 — Preparación de los repositorios</li><li><span class="chip">Fase 4 · Implementación</span> Fase 4 — Incremento 1: Autenticación</li><li><span class="chip">Fase 4 · Implementación</span> Fase 4 — Incremento 2: Gestión de usuarios</li><li><span class="chip">Fase 4 · Implementación</span> Fase 4 — Incremento 3: Catálogo: categorías, productos y precios</li><li><span class="chip">Fase 4 · Implementación</span> Fase 4 — Incremento 4: Clientes y proveedores</li><li><span class="chip">Fase 4 · Implementación</span> Fase 4 — Incremento 5: Núcleo de inventario</li><li><span class="chip">Fase 4 · Implementación</span> Fase 4 — Incremento 6: Ajustes e inventario inicial</li><li><span class="chip">Fase 4 · Implementación</span> Fase 4 — Incremento 7: Compras y su anulación</li><li><span class="chip">Fase 4 · Implementación</span> Fase 4 — Incremento 8: Ventas con pago en efectivo</li><li><span class="chip">Fase 4 · Implementación</span> Fase 4 — Incremento 9: Devoluciones</li><li><span class="chip">Fase 4 · Implementación</span> Fase 4 — Incremento 10: Comprobantes</li><li><span class="chip">Fase 4 · Implementación</span> Fase 4 — Incremento 11: Auditoría y valorización</li><li><span class="chip">Fase 4 · Implementación</span> Fase 4 — Modo bloque (incrementos 6 a 9)</li><li><span class="chip">Fase 5 · Pruebas</span> Fase 5 — Pruebas</li><li><span class="chip">Fase 6 · CI/CD</span> Fase 6 — CI/CD con Taiga y despliegue gratuito</li><li><span class="chip">Fase 7 · Métricas</span> Fase 7 — Métricas y monitoreo</li><li><span class="chip">Transversal</span> Prompts de verificación y corrección (usados en todas las fases)</li></ol>
+</div>
+<div class="salto"></div>
+<section class="prompt">
+<div class="cab"><span class="num">01</span><span class="chip">Contexto</span></div>
+<h2>Prompt de contexto (se envía al inicio de cada sesión)</h2>
+<p class="obj"><b>Objetivo:</b> Dar a la IA un marco estable para que todas las respuestas respeten las mismas reglas, sin repetirlas en cada prompt.</p>
+<pre>Actúa como un equipo de ingeniería de software (analista, arquitecto, desarrollador full stack y QA) que acompaña a tres estudiantes de ingeniería en un proyecto académico.
+
+Proyecto: FerreStock, sistema web de inventario para una ferretería en Colombia.
+Autores (van en el encabezado de cada archivo): Ana Sofía Nagles García, María Mercedes Rincón Valencia y Juan David Camacho Tapiero.
+
+Reglas que aplican a todas las fases:
+1. Trabajamos por fases. No avances a la siguiente sin nuestra aprobación explícita.
+2. Escribe en español claro y técnico, con nombres propios del dominio (producto, existencias, kardex, consecutivo). No copies textos de otros proyectos ni de los enunciados.
+3. Todo archivo lleva un encabezado con: nombre, descripción, fecha de creación, fecha de actualización, autores y versión.
+4. Si un requisito es ambiguo, no inventes la regla: regístrala como &quot;decisión pendiente&quot; (DP-xx) con una propuesta marcada [P].
+5. Cada afirmación de &quot;funciona&quot; debe venir acompañada de la prueba que lo demuestra, con números reales.
+6. Stack fijo: Java 21, Spring Boot 3, JPA, Lombok y PostgreSQL en el backend; React, Material UI, Formik y Yup en el frontend; GitHub y Taiga para la gestión.</pre>
+<table><tr><th>Entregables</th><td>Ninguno: solo fija el contexto.</td></tr><tr><th>Cómo se verificó</th><td>La IA resume las reglas antes de empezar y pregunta lo que falte.</td></tr></table>
+</section><section class="prompt">
+<div class="cab"><span class="num">02</span><span class="chip">Fase 1 · Análisis</span></div>
+<h2>Fase 1 — Visión, alcance e interesados</h2>
+<p class="obj"><b>Objetivo:</b> Delimitar qué problema resuelve el sistema, para quién y qué queda fuera.</p>
+<pre>Con base en la descripción del negocio (ferretería que vende al detal, compra a proveedores, recibe devoluciones y necesita inventario confiable), redacta:
+
+1. 01_vision_y_alcance.md: problema, objetivos medibles (OBJ-01…), alcance incluido y excluido (por ejemplo, la facturación electrónica real queda fuera y se simula), supuestos y restricciones (plan gratuito, equipo de 3 personas).
+2. 02_interesados_y_roles.md: interesados con sus intereses y los dos roles del sistema (Administrador y Usuario operativo), con sus necesidades.
+
+Usa tablas. Termina con una lista de preguntas para el cliente.</pre>
+<table><tr><th>Entregables</th><td>01_vision_y_alcance.md, 02_interesados_y_roles.md y una lista de preguntas abiertas.</td></tr><tr><th>Cómo se verificó</th><td>Revisión del equipo: el alcance excluido quedó explícito y las preguntas se convirtieron en DP-01 a DP-22.</td></tr></table>
+</section><section class="prompt">
+<div class="cab"><span class="num">03</span><span class="chip">Fase 1 · Análisis</span></div>
+<h2>Fase 1 — Requisitos, reglas de negocio y casos de uso</h2>
+<p class="obj"><b>Objetivo:</b> Obtener requisitos verificables y trazables, sin ambigüedades ocultas.</p>
+<pre>Redacta 03_requisitos.md con requisitos funcionales agrupados por módulo, con códigos RF-&lt;MÓDULO&gt;-NNN (AUT, PRO, PRE, INV, COS, COM, VEN, PAG, TER, DEV, AJU, DOC, AUD, MON). Cada fila trae: descripción, criterio de aceptación verificable, rol, prioridad MoSCoW, regla de negocio relacionada y escenario que lo prueba.
+
+Agrega los no funcionales (RNF-SEG, RNF-USA, RNF-FIA, RNF-DES, RNF-ADF…) con su forma de verificación.
+
+Luego escribe 04_reglas_del_negocio.md (RN-01…), 05_casos_de_uso.md (actor, flujo principal y errores) y 06_permisos_por_rol.md (matriz de permisos con el principio de mínimo privilegio).
+
+Restricciones:
+- Las existencias nunca pueden quedar negativas, ni siquiera con operaciones simultáneas.
+- El costo es promedio ponderado (CPP), con aritmética decimal exacta.
+- Los documentos no se borran: se anulan.</pre>
+<table><tr><th>Entregables</th><td>Cuatro documentos en Markdown con tablas y códigos estables.</td></tr><tr><th>Cómo se verificó</th><td>Cada RF tiene su criterio de aceptación; ningún criterio usa palabras vagas como &quot;rápido&quot; o &quot;fácil&quot;.</td></tr></table>
+</section><section class="prompt">
+<div class="cab"><span class="num">04</span><span class="chip">Fase 1 · Análisis</span></div>
+<h2>Fase 1 — Escenarios de aceptación, riesgos y trazabilidad</h2>
+<p class="obj"><b>Objetivo:</b> Convertir los requisitos en escenarios comprobables y dejar visibles los riesgos y las decisiones pendientes.</p>
+<pre>Escribe 07_escenarios_de_aceptacion.md en formato Dado / Cuando / Entonces, con códigos CA-&lt;MÓDULO&gt;-NN y números concretos. Por ejemplo: &quot;Dado un producto con 10 unidades a CPP 1.000, cuando se compran 30 a 1.400, entonces el CPP es 1.300&quot;.
+
+Incluye escenarios de concurrencia (dos ventas simultáneas de la última unidad), de límites (cantidades con decimales en productos que no se fraccionan) y de seguridad (un rol sin permiso recibe 403).
+
+Después escribe 08_riesgos_y_decisiones.md, con riesgos calificados por probabilidad e impacto y su mitigación, y una tabla de decisiones pendientes. Cierra con 09_trazabilidad.md: objetivo → requisito → caso de uso → escenario → requisito no funcional.</pre>
+<table><tr><th>Entregables</th><td>Tres documentos; la matriz de trazabilidad no deja requisitos huérfanos.</td></tr><tr><th>Cómo se verificó</th><td>Script de revisión: todo RF aparece en la matriz y todo CA apunta a un RF.</td></tr></table>
+</section><section class="prompt">
+<div class="cab"><span class="num">05</span><span class="chip">Fase 2 · Diseño</span></div>
+<h2>Fase 2 — Arquitectura y decisiones técnicas</h2>
+<p class="obj"><b>Objetivo:</b> Elegir la arquitectura con argumentos y dejar cada decisión registrada.</p>
+<pre>Diseña la arquitectura de FerreStock:
+- Backend en monolito modular por dominio (autenticacion, usuarios, catalogo, terceros, inventario, compras, ventas, devoluciones, ajustes, comprobantes, auditoria, monitoreo), con capas Controller → Service → Repository.
+- Frontend SPA en el mismo origen que la API: el hosting reenvía /api al backend.
+
+Entrega 01_arquitectura.md, con diagramas Mermaid de componentes y dependencias, y 09_decisiones_tecnicas.md con ADRs numerados (contexto, decisión, alternativas descartadas, consecuencias).
+
+Resuelve como propuesta [P] las decisiones pendientes de la Fase 1 que bloqueen el diseño, por ejemplo:
+- cómo se anula una venta;
+- a qué costo reingresa una devolución;
+- si hay consecutivos para todos los documentos.
+
+Justifica cada propuesta con la integridad del inventario.</pre>
+<table><tr><th>Entregables</th><td>Arquitectura y ADR-01 a ADR-19, más las DP resueltas como propuesta.</td></tr><tr><th>Cómo se verificó</th><td>El equipo aprobó las propuestas; las DP sin resolver (DP-20) quedaron explícitas.</td></tr></table>
+</section><section class="prompt">
+<div class="cab"><span class="num">06</span><span class="chip">Fase 2 · Diseño</span></div>
+<h2>Fase 2 — Modelo de datos e inventario/costos</h2>
+<p class="obj"><b>Objetivo:</b> Un esquema que haga imposible, por diseño, lo que las reglas prohíben.</p>
+<pre>Diseña el modelo de datos en PostgreSQL (02_modelo_de_datos.md y modelo-er.mmd):
+- Usa CHECK, UNIQUE y FK para proteger las reglas: existencias &gt;= 0, un producto por línea de documento y motivo de anulación obligatorio si el estado es ANULADA.
+- Haz el kardex y la auditoría inmutables con un trigger que rechace UPDATE y DELETE.
+- Usa consecutivos en una tabla con bloqueo de fila (sin huecos ante un rollback).
+
+En 03_inventario_y_costos.md:
+- Escribe la tabla de efectos de cada operación sobre existencias y CPP, y las fórmulas con precisión (cantidad 3 decimales, costo 4, dinero 2, HALF_UP).
+- Define las reglas de anulación: cuándo se permite, cuándo se bloquea y por qué.
+- Define los controles de las devoluciones y la consulta de verificación de consistencia entre productos y kardex.</pre>
+<table><tr><th>Entregables</th><td>Modelo de datos, diagrama ER y reglas de costos con ejemplos numéricos.</td></tr><tr><th>Cómo se verificó</th><td>Los ejemplos numéricos se convirtieron después en pruebas unitarias (CA-COS-01 a 03).</td></tr></table>
+</section><section class="prompt">
+<div class="cab"><span class="num">07</span><span class="chip">Fase 2 · Diseño</span></div>
+<h2>Fase 2 — API REST, seguridad y frontend</h2>
+<p class="obj"><b>Objetivo:</b> Contratos claros entre frontend y backend, y una seguridad pensada desde el diseño.</p>
+<pre>Define la API en 04_api_rest.md:
+- Recursos versionados (/api/v1), paginación, filtros y errores en formato ProblemDetail (RFC 9457) con un código estable por caso (EXISTENCIAS_INSUFICIENTES, VERSION_DESACTUALIZADA…) y errores por campo.
+- Los montos viajan como texto para no perder precisión.
+- El precio de venta nunca viaja desde el cliente.
+
+En 05_seguridad.md cubre:
+- Sesión en el servidor con cookie HttpOnly.
+- &quot;Recordarme&quot; con token persistente.
+- CSRF con cookie y cabecera.
+- Bloqueo por intentos fallidos.
+- @PreAuthorize por método.
+- Revalidación del estado de la cuenta en cada petición.
+
+En 06_frontend.md define la estructura por módulos, los componentes compartidos, la validación con Yup alineada con el backend, i18n (es/en), accesibilidad (WCAG 2.1 AA) y diseño responsive.
+
+En 07_flujos_criticos.md agrega diagramas de secuencia de la venta concurrente, la compra, la devolución, el ajuste y la anulación.</pre>
+<table><tr><th>Entregables</th><td>Cuatro documentos de diseño listos para implementar.</td></tr><tr><th>Cómo se verificó</th><td>Revisión cruzada: cada endpoint corresponde a un RF y cada RF de la API tiene su permiso por rol.</td></tr></table>
+</section><section class="prompt">
+<div class="cab"><span class="num">08</span><span class="chip">Fase 2 · Diseño</span></div>
+<h2>Fase 2 — Repositorios, pruebas y entrega</h2>
+<p class="obj"><b>Objetivo:</b> Decidir desde el diseño cómo se versiona, se prueba y se despliega.</p>
+<pre>Escribe 08_repositorios_y_entrega.md con:
+- Repositorios separados para backend, frontend y documentación.
+- Ramas main, develop y feature/*, con commits Conventional Commits en español.
+- Formato obligatorio de encabezados y su verificación automática.
+- Estrategia de pruebas por tipo: unitarias, integración con Testcontainers, seguridad, mutación con PIT, E2E con Playwright y axe, compatibilidad con Selenium, y carga con k6.
+- Diseño del pipeline: en cada push corren las pruebas; si fallan, se crea un issue y una tarea en Taiga asignados al autor del commit; si vuelven a pasar, se cierran.</pre>
+<table><tr><th>Entregables</th><td>Documento de entrega y estrategia de pruebas.</td></tr><tr><th>Cómo se verificó</th><td>Sirvió de guion para las fases 5 y 6.</td></tr></table>
+</section><section class="prompt">
+<div class="cab"><span class="num">09</span><span class="chip">Fase 3 · Preparación</span></div>
+<h2>Fase 3 — Preparación de los repositorios</h2>
+<p class="obj"><b>Objetivo:</b> Una base técnica que compile, pruebe y verifique encabezados antes de escribir funcionalidad.</p>
+<pre>Prepara los dos repositorios de código.
+
+Backend (Spring Boot 3.5, Java 21, Maven Wrapper):
+- Paquetes por módulo.
+- Configuración de seguridad (sesión, CSRF con cookie, CORS cerrado).
+- Manejador global de errores con ProblemDetail y correlación.
+- i18n con MessageSource.
+- OpenAPI solo en desarrollo.
+- Jackson con BigDecimal como texto.
+- Perfiles dev, test y prod.
+- Scripts db/01_esquema.sql, db/02_datos_iniciales.sql y crear_bd.sh (crea el rol de aplicación y el admin con clave temporal).
+- Scripts compilar, probar, mutacion, arrancar y verificar_encabezados.
+- Pruebas de la base técnica con Testcontainers.
+
+Frontend (Vite, React, MUI):
+- Tokens de diseño y tema claro/oscuro.
+- Cliente Axios con CSRF y Accept-Language.
+- Rutas protegidas por sesión y rol con carga diferida.
+- Plantilla responsive y accesible, i18n por namespaces.
+- Playwright con tres proyectos (Chromium, Firefox, móvil) y una API simulada.
+
+No implementes funcionalidad de negocio todavía.</pre>
+<table><tr><th>Entregables</th><td>Dos repositorios con su base técnica en verde.</td></tr><tr><th>Cómo se verificó</th><td>./mvnw verify en verde; lint, i18n, build y E2E de la plantilla en verde; informe 01_informe_preparacion.md.</td></tr></table>
+</section><section class="prompt">
+<div class="cab"><span class="num">10</span><span class="chip">Fase 4 · Implementación</span></div>
+<h2>Fase 4 — Incremento 1: Autenticación</h2>
+<p class="obj"><b>Objetivo:</b> Implementar autenticación de punta a punta, con pruebas, sin romper lo anterior.</p>
+<pre>Implementa el incremento 1 (Autenticación) en ramas feature/ de ambos repositorios, siguiendo el diseño aprobado.
+
+Alcance (RF-AUT-001 a 005, 007 y 008; RF-AUD-001): inicio de sesión con &quot;Recordarme&quot; (7 días), cierre de sesión, bloqueo tras 5 intentos fallidos por 15 minutos, cambio obligatorio de la contraseña temporal, auditoría de inicios exitosos y fallidos, y el menú según el rol.
+
+Backend: entidad, repositorio, servicio, controlador, DTO validados con mensajes i18n, códigos de error estables, auditoría, Javadoc y encabezados.
+Frontend: servicio, pantallas con MUI (tabla en escritorio y tarjetas en móvil), formulario con Formik y Yup con las mismas reglas que el backend, i18n es/en, JSDoc y accesibilidad.
+
+Pruebas obligatorias:
+- Integración con PostgreSQL real que cubra CA-AUT-01 a 06 y 08.
+- Unitarias de las reglas.
+- E2E con Playwright (incluida una revisión con axe).
+
+Cuida especialmente: Que el mensaje de credenciales inválidas sea genérico; que una cuenta desactivada pierda la sesión en la siguiente petición.
+
+Al terminar, corre la batería completa. Escribe el informe del incremento con los resultados reales y los defectos encontrados, y espera nuestra aprobación para fusionar en develop.</pre>
+<table><tr><th>Entregables</th><td>Código, pruebas e informe del incremento 1.</td></tr><tr><th>Cómo se verificó</th><td>Backend completo en verde (Testcontainers), E2E en verde y, desde el incremento 6, una verificación manual con la base real.</td></tr></table>
+</section><section class="prompt">
+<div class="cab"><span class="num">11</span><span class="chip">Fase 4 · Implementación</span></div>
+<h2>Fase 4 — Incremento 2: Gestión de usuarios</h2>
+<p class="obj"><b>Objetivo:</b> Implementar gestión de usuarios de punta a punta, con pruebas, sin romper lo anterior.</p>
+<pre>Implementa el incremento 2 (Gestión de usuarios) en ramas feature/ de ambos repositorios, siguiendo el diseño aprobado.
+
+Alcance (RF-AUT-006): alta, edición, cambio de rol, desactivación y restablecimiento de contraseña, solo para el ADMIN; un administrador no puede desactivarse ni quitarse el rol a sí mismo; al cambiar el rol o la contraseña se cierran las sesiones activas.
+
+Backend: entidad, repositorio, servicio, controlador, DTO validados con mensajes i18n, códigos de error estables, auditoría, Javadoc y encabezados.
+Frontend: servicio, pantallas con MUI (tabla en escritorio y tarjetas en móvil), formulario con Formik y Yup con las mismas reglas que el backend, i18n es/en, JSDoc y accesibilidad.
+
+Pruebas obligatorias:
+- Integración con PostgreSQL real que cubra CA-AUT-07.
+- Unitarias de las reglas.
+- E2E con Playwright (incluida una revisión con axe).
+
+Cuida especialmente: Que la sesión de un usuario desactivado se invalide de inmediato (revalidación por petición, ADR-19).
+
+Al terminar, corre la batería completa. Escribe el informe del incremento con los resultados reales y los defectos encontrados, y espera nuestra aprobación para fusionar en develop.</pre>
+<table><tr><th>Entregables</th><td>Código, pruebas e informe del incremento 2.</td></tr><tr><th>Cómo se verificó</th><td>Backend completo en verde (Testcontainers), E2E en verde y, desde el incremento 6, una verificación manual con la base real.</td></tr></table>
+</section><section class="prompt">
+<div class="cab"><span class="num">12</span><span class="chip">Fase 4 · Implementación</span></div>
+<h2>Fase 4 — Incremento 3: Catálogo: categorías, productos y precios</h2>
+<p class="obj"><b>Objetivo:</b> Implementar catálogo: categorías, productos y precios de punta a punta, con pruebas, sin romper lo anterior.</p>
+<pre>Implementa el incremento 3 (Catálogo: categorías, productos y precios) en ramas feature/ de ambos repositorios, siguiendo el diseño aprobado.
+
+Alcance (RF-PRO, RF-PRE, RF-COS-002): código único sin distinguir mayúsculas, bloqueo optimista con versión, desactivación en lugar de borrado, cambio de precio auditado y costo visible solo para el ADMIN.
+
+Backend: entidad, repositorio, servicio, controlador, DTO validados con mensajes i18n, códigos de error estables, auditoría, Javadoc y encabezados.
+Frontend: servicio, pantallas con MUI (tabla en escritorio y tarjetas en móvil), formulario con Formik y Yup con las mismas reglas que el backend, i18n es/en, JSDoc y accesibilidad.
+
+Pruebas obligatorias:
+- Integración con PostgreSQL real que cubra CA-PRO-01 a 06, 08, 10; CA-PRE-01, 02.
+- Unitarias de las reglas.
+- E2E con Playwright (incluida una revisión con axe).
+
+Cuida especialmente: Que dos ediciones simultáneas devuelvan 409 VERSION_DESACTUALIZADA y la pantalla ofrezca recargar.
+
+Al terminar, corre la batería completa. Escribe el informe del incremento con los resultados reales y los defectos encontrados, y espera nuestra aprobación para fusionar en develop.</pre>
+<table><tr><th>Entregables</th><td>Código, pruebas e informe del incremento 3.</td></tr><tr><th>Cómo se verificó</th><td>Backend completo en verde (Testcontainers), E2E en verde y, desde el incremento 6, una verificación manual con la base real.</td></tr></table>
+</section><section class="prompt">
+<div class="cab"><span class="num">13</span><span class="chip">Fase 4 · Implementación</span></div>
+<h2>Fase 4 — Incremento 4: Clientes y proveedores</h2>
+<p class="obj"><b>Objetivo:</b> Implementar clientes y proveedores de punta a punta, con pruebas, sin romper lo anterior.</p>
+<pre>Implementa el incremento 4 (Clientes y proveedores) en ramas feature/ de ambos repositorios, siguiendo el diseño aprobado.
+
+Alcance (RF-TER): un solo registro con los roles cliente y proveedor, validación del dígito de verificación del NIT con el algoritmo módulo 11, persona jurídica solo con NIT y documento único.
+
+Backend: entidad, repositorio, servicio, controlador, DTO validados con mensajes i18n, códigos de error estables, auditoría, Javadoc y encabezados.
+Frontend: servicio, pantallas con MUI (tabla en escritorio y tarjetas en móvil), formulario con Formik y Yup con las mismas reglas que el backend, i18n es/en, JSDoc y accesibilidad.
+
+Pruebas obligatorias:
+- Integración con PostgreSQL real que cubra CA-TER-01 a 04.
+- Unitarias de las reglas.
+- E2E con Playwright (incluida una revisión con axe).
+
+Cuida especialmente: Que el DV inválido se marque en su campo, tanto en Yup como desde el backend.
+
+Al terminar, corre la batería completa. Escribe el informe del incremento con los resultados reales y los defectos encontrados, y espera nuestra aprobación para fusionar en develop.</pre>
+<table><tr><th>Entregables</th><td>Código, pruebas e informe del incremento 4.</td></tr><tr><th>Cómo se verificó</th><td>Backend completo en verde (Testcontainers), E2E en verde y, desde el incremento 6, una verificación manual con la base real.</td></tr></table>
+</section><section class="prompt">
+<div class="cab"><span class="num">14</span><span class="chip">Fase 4 · Implementación</span></div>
+<h2>Fase 4 — Incremento 5: Núcleo de inventario</h2>
+<p class="obj"><b>Objetivo:</b> Implementar núcleo de inventario de punta a punta, con pruebas, sin romper lo anterior.</p>
+<pre>Implementa el incremento 5 (Núcleo de inventario) en ramas feature/ de ambos repositorios, siguiendo el diseño aprobado.
+
+Alcance (RF-INV, RF-COS-001, RF-DOC-001): un servicio único que mueve existencias y CPP (propagación MANDATORY), bloqueo FOR UPDATE de los productos en orden de id, kardex inmutable con saldo y CPP anterior y resultante, consecutivos sin huecos, existencias, kardex filtrable, valorización y verificación de consistencia.
+
+Backend: entidad, repositorio, servicio, controlador, DTO validados con mensajes i18n, códigos de error estables, auditoría, Javadoc y encabezados.
+Frontend: servicio, pantallas con MUI (tabla en escritorio y tarjetas en móvil), formulario con Formik y Yup con las mismas reglas que el backend, i18n es/en, JSDoc y accesibilidad.
+
+Pruebas obligatorias:
+- Integración con PostgreSQL real que cubra CA-INV-01, 02 y la concurrencia real.
+- Unitarias de las reglas.
+- E2E con Playwright (incluida una revisión con axe).
+
+Cuida especialmente: Que 2 ventas simultáneas de la última unidad confirmen exactamente 1 y que 50 consecutivos simultáneos salgan distintos y seguidos.
+
+Al terminar, corre la batería completa. Escribe el informe del incremento con los resultados reales y los defectos encontrados, y espera nuestra aprobación para fusionar en develop.</pre>
+<table><tr><th>Entregables</th><td>Código, pruebas e informe del incremento 5.</td></tr><tr><th>Cómo se verificó</th><td>Backend completo en verde (Testcontainers), E2E en verde y, desde el incremento 6, una verificación manual con la base real.</td></tr></table>
+</section><section class="prompt">
+<div class="cab"><span class="num">15</span><span class="chip">Fase 4 · Implementación</span></div>
+<h2>Fase 4 — Incremento 6: Ajustes e inventario inicial</h2>
+<p class="obj"><b>Objetivo:</b> Implementar ajustes e inventario inicial de punta a punta, con pruebas, sin romper lo anterior.</p>
+<pre>Implementa el incremento 6 (Ajustes e inventario inicial) en ramas feature/ de ambos repositorios, siguiendo el diseño aprobado.
+
+Alcance (RF-AJU): ajustes de entrada (con costo, ponderan) y de salida (al CPP vigente) solo para el ADMIN, con motivo obligatorio; el inventario inicial es un ajuste de entrada; vista previa del efecto antes de guardar.
+
+Backend: entidad, repositorio, servicio, controlador, DTO validados con mensajes i18n, códigos de error estables, auditoría, Javadoc y encabezados.
+Frontend: servicio, pantallas con MUI (tabla en escritorio y tarjetas en móvil), formulario con Formik y Yup con las mismas reglas que el backend, i18n es/en, JSDoc y accesibilidad.
+
+Pruebas obligatorias:
+- Integración con PostgreSQL real que cubra CA-AJU-01 a 04.
+- Unitarias de las reglas.
+- E2E con Playwright (incluida una revisión con axe).
+
+Cuida especialmente: Que una salida mayor que las existencias se rechace sin consumir el consecutivo.
+
+Al terminar, corre la batería completa. Escribe el informe del incremento con los resultados reales y los defectos encontrados, y espera nuestra aprobación para fusionar en develop.</pre>
+<table><tr><th>Entregables</th><td>Código, pruebas e informe del incremento 6.</td></tr><tr><th>Cómo se verificó</th><td>Backend completo en verde (Testcontainers), E2E en verde y, desde el incremento 6, una verificación manual con la base real.</td></tr></table>
+</section><section class="prompt">
+<div class="cab"><span class="num">16</span><span class="chip">Fase 4 · Implementación</span></div>
+<h2>Fase 4 — Incremento 7: Compras y su anulación</h2>
+<p class="obj"><b>Objetivo:</b> Implementar compras y su anulación de punta a punta, con pruebas, sin romper lo anterior.</p>
+<pre>Implementa el incremento 7 (Compras y su anulación) en ramas feature/ de ambos repositorios, siguiendo el diseño aprobado.
+
+Alcance (RF-COM, RF-COS-001): compra recibida completa en una transacción (si una línea falla no queda nada y se dice cuál), anulación solo del ADMIN que restaura el CPP anterior y se bloquea si ya se vendió o hubo entradas posteriores.
+
+Backend: entidad, repositorio, servicio, controlador, DTO validados con mensajes i18n, códigos de error estables, auditoría, Javadoc y encabezados.
+Frontend: servicio, pantallas con MUI (tabla en escritorio y tarjetas en móvil), formulario con Formik y Yup con las mismas reglas que el backend, i18n es/en, JSDoc y accesibilidad.
+
+Pruebas obligatorias:
+- Integración con PostgreSQL real que cubra CA-COM-01 a 04, CA-COS-01, 02.
+- Unitarias de las reglas.
+- E2E con Playwright (incluida una revisión con axe).
+
+Cuida especialmente: Que la anulación restaure el CPP exacto y que la verificación de consistencia quede limpia.
+
+Al terminar, corre la batería completa. Escribe el informe del incremento con los resultados reales y los defectos encontrados, y espera nuestra aprobación para fusionar en develop.</pre>
+<table><tr><th>Entregables</th><td>Código, pruebas e informe del incremento 7.</td></tr><tr><th>Cómo se verificó</th><td>Backend completo en verde (Testcontainers), E2E en verde y, desde el incremento 6, una verificación manual con la base real.</td></tr></table>
+</section><section class="prompt">
+<div class="cab"><span class="num">17</span><span class="chip">Fase 4 · Implementación</span></div>
+<h2>Fase 4 — Incremento 8: Ventas con pago en efectivo</h2>
+<p class="obj"><b>Objetivo:</b> Implementar ventas con pago en efectivo de punta a punta, con pruebas, sin romper lo anterior.</p>
+<pre>Implementa el incremento 8 (Ventas con pago en efectivo) en ramas feature/ de ambos repositorios, siguiendo el diseño aprobado.
+
+Alcance (RF-VEN, RF-PAG): venta y pago en una sola operación, precio vigente tomado del servidor, rechazo por existencias con producto y disponibles, pago insuficiente o en otro medio rechazado, cambio calculado y anulación al costo histórico, bloqueada si hay devoluciones.
+
+Backend: entidad, repositorio, servicio, controlador, DTO validados con mensajes i18n, códigos de error estables, auditoría, Javadoc y encabezados.
+Frontend: servicio, pantallas con MUI (tabla en escritorio y tarjetas en móvil), formulario con Formik y Yup con las mismas reglas que el backend, i18n es/en, JSDoc y accesibilidad.
+
+Pruebas obligatorias:
+- Integración con PostgreSQL real que cubra CA-VEN-01 a 06, CA-PAG-01, 02.
+- Unitarias de las reglas.
+- E2E con Playwright (incluida una revisión con axe).
+
+Cuida especialmente: Que el costo de la línea quede guardado y solo lo vea el ADMIN.
+
+Al terminar, corre la batería completa. Escribe el informe del incremento con los resultados reales y los defectos encontrados, y espera nuestra aprobación para fusionar en develop.</pre>
+<table><tr><th>Entregables</th><td>Código, pruebas e informe del incremento 8.</td></tr><tr><th>Cómo se verificó</th><td>Backend completo en verde (Testcontainers), E2E en verde y, desde el incremento 6, una verificación manual con la base real.</td></tr></table>
+</section><section class="prompt">
+<div class="cab"><span class="num">18</span><span class="chip">Fase 4 · Implementación</span></div>
+<h2>Fase 4 — Incremento 9: Devoluciones</h2>
+<p class="obj"><b>Objetivo:</b> Implementar devoluciones de punta a punta, con pruebas, sin romper lo anterior.</p>
+<pre>Implementa el incremento 9 (Devoluciones) en ramas feature/ de ambos repositorios, siguiendo el diseño aprobado.
+
+Alcance (RF-DEV, RF-COS-003): devolución con venta (mismo cliente y sin superar lo vendido acumulado, al costo histórico) o sin venta (al CPP vigente y auditada para revisión), con líneas aceptadas o rechazadas y quién validó.
+
+Backend: entidad, repositorio, servicio, controlador, DTO validados con mensajes i18n, códigos de error estables, auditoría, Javadoc y encabezados.
+Frontend: servicio, pantallas con MUI (tabla en escritorio y tarjetas en móvil), formulario con Formik y Yup con las mismas reglas que el backend, i18n es/en, JSDoc y accesibilidad.
+
+Pruebas obligatorias:
+- Integración con PostgreSQL real que cubra CA-DEV-01 a 03, CA-COS-03.
+- Unitarias de las reglas.
+- E2E con Playwright (incluida una revisión con axe).
+
+Cuida especialmente: Que CA-COS-03 dé exactamente 1.166,6667.
+
+Al terminar, corre la batería completa. Escribe el informe del incremento con los resultados reales y los defectos encontrados, y espera nuestra aprobación para fusionar en develop.</pre>
+<table><tr><th>Entregables</th><td>Código, pruebas e informe del incremento 9.</td></tr><tr><th>Cómo se verificó</th><td>Backend completo en verde (Testcontainers), E2E en verde y, desde el incremento 6, una verificación manual con la base real.</td></tr></table>
+</section><section class="prompt">
+<div class="cab"><span class="num">19</span><span class="chip">Fase 4 · Implementación</span></div>
+<h2>Fase 4 — Incremento 10: Comprobantes</h2>
+<p class="obj"><b>Objetivo:</b> Implementar comprobantes de punta a punta, con pruebas, sin romper lo anterior.</p>
+<pre>Implementa el incremento 10 (Comprobantes) en ramas feature/ de ambos repositorios, siguiendo el diseño aprobado.
+
+Alcance (RF-DOC-002 a 005): comprobante armado desde el documento (nunca guardado aparte), con encabezado del negocio, líneas, totales, pago y la leyenda de documento simulado en el idioma de la petición; búsqueda unificada y vista imprimible.
+
+Backend: entidad, repositorio, servicio, controlador, DTO validados con mensajes i18n, códigos de error estables, auditoría, Javadoc y encabezados.
+Frontend: servicio, pantallas con MUI (tabla en escritorio y tarjetas en móvil), formulario con Formik y Yup con las mismas reglas que el backend, i18n es/en, JSDoc y accesibilidad.
+
+Pruebas obligatorias:
+- Integración con PostgreSQL real que cubra CA-DOC-01 a 03.
+- Unitarias de las reglas.
+- E2E con Playwright (incluida una revisión con axe).
+
+Cuida especialmente: Que los comprobantes de ajuste solo los vea el ADMIN.
+
+Al terminar, corre la batería completa. Escribe el informe del incremento con los resultados reales y los defectos encontrados, y espera nuestra aprobación para fusionar en develop.</pre>
+<table><tr><th>Entregables</th><td>Código, pruebas e informe del incremento 10.</td></tr><tr><th>Cómo se verificó</th><td>Backend completo en verde (Testcontainers), E2E en verde y, desde el incremento 6, una verificación manual con la base real.</td></tr></table>
+</section><section class="prompt">
+<div class="cab"><span class="num">20</span><span class="chip">Fase 4 · Implementación</span></div>
+<h2>Fase 4 — Incremento 11: Auditoría y valorización</h2>
+<p class="obj"><b>Objetivo:</b> Implementar auditoría y valorización de punta a punta, con pruebas, sin romper lo anterior.</p>
+<pre>Implementa el incremento 11 (Auditoría y valorización) en ramas feature/ de ambos repositorios, siguiendo el diseño aprobado.
+
+Alcance (RF-AUD-002, 003; RF-COS-002): pantalla de auditoría para el ADMIN con filtros por usuario, acción, fechas y texto; ninguna operación de edición ni borrado sobre los eventos.
+
+Backend: entidad, repositorio, servicio, controlador, DTO validados con mensajes i18n, códigos de error estables, auditoría, Javadoc y encabezados.
+Frontend: servicio, pantallas con MUI (tabla en escritorio y tarjetas en móvil), formulario con Formik y Yup con las mismas reglas que el backend, i18n es/en, JSDoc y accesibilidad.
+
+Pruebas obligatorias:
+- Integración con PostgreSQL real que cubra CA-AUD-01, 02.
+- Unitarias de las reglas.
+- E2E con Playwright (incluida una revisión con axe).
+
+Cuida especialmente: Que PUT y DELETE sobre la auditoría no existan (4xx).
+
+Al terminar, corre la batería completa. Escribe el informe del incremento con los resultados reales y los defectos encontrados, y espera nuestra aprobación para fusionar en develop.</pre>
+<table><tr><th>Entregables</th><td>Código, pruebas e informe del incremento 11.</td></tr><tr><th>Cómo se verificó</th><td>Backend completo en verde (Testcontainers), E2E en verde y, desde el incremento 6, una verificación manual con la base real.</td></tr></table>
+</section><section class="prompt">
+<div class="cab"><span class="num">21</span><span class="chip">Fase 4 · Implementación</span></div>
+<h2>Fase 4 — Modo bloque (incrementos 6 a 9)</h2>
+<p class="obj"><b>Objetivo:</b> Acelerar sin perder control cuando el equipo ya confía en el proceso.</p>
+<pre>Ya aprobamos el proceso. Haz los incrementos 6 a 9 seguidos, sin detenerte a pedir aprobación entre uno y otro:
+- Cada incremento va en su rama y se fusiona en develop cuando pasan el backend completo y las E2E de Chromium.
+- Al final del bloque, corre la matriz E2E completa (Chromium, Firefox y móvil) y haz una verificación manual en el navegador: inventario inicial → compra → venta → devolución, revisando kardex, CPP y auditoría.
+- Escribe un informe por incremento y un resumen corto del bloque con lo hecho, los errores y lo pendiente.
+- Detente solo ante una decisión de negocio no resuelta o un bloqueo real.</pre>
+<table><tr><th>Entregables</th><td>Cuatro incrementos fusionados, informes y resumen del bloque.</td></tr><tr><th>Cómo se verificó</th><td>La matriz completa pasó; la verificación manual coincidió con el CPP calculado a mano (450).</td></tr></table>
+</section><section class="prompt">
+<div class="cab"><span class="num">22</span><span class="chip">Fase 5 · Pruebas</span></div>
+<h2>Fase 5 — Pruebas</h2>
+<p class="obj"><b>Objetivo:</b> Evidencia de calidad por tipo de prueba, con números reales y el catálogo de casos.</p>
+<pre>Completa la Fase 5:
+1. Mutación con PIT sobre los servicios y compartido; reporta el puntaje y la fuerza de las pruebas, y explica las diferencias.
+2. Compatibilidad con Selenium WebDriver contra la app real (ingreso, idioma, nueva venta, sesión persistente y ruta protegida); Chrome en local y Edge en CI.
+3. Carga, estrés y picos con k6: listados concurrentes, 200 ventas del mismo producto con 50 usuarios (solo 201 o 409, nunca 500, y kardex consistente al final) y una ráfaga de usuarios.
+4. Genera el catálogo de casos de prueba desde los nombres reales de las pruebas, clasificado por tipo.
+5. Escribe el informe de pruebas. Si algo no se pudo ejecutar, dilo y explica por qué.</pre>
+<table><tr><th>Entregables</th><td>01_catalogo_casos.md (220 casos), 02_informe_pruebas.md, scripts de k6 y pruebas de Selenium.</td></tr><tr><th>Cómo se verificó</th><td>Selenium 3/3 contra la app real; PIT 25 % (fuerza 83 %), con su explicación; k6 documentado como no ejecutado en el equipo local.</td></tr></table>
+</section><section class="prompt">
+<div class="cab"><span class="num">23</span><span class="chip">Fase 6 · CI/CD</span></div>
+<h2>Fase 6 — CI/CD con Taiga y despliegue gratuito</h2>
+<p class="obj"><b>Objetivo:</b> Que cada cambio se pruebe solo, que despliegue si todo pasa y que los fallos se conviertan en trabajo asignado en Taiga.</p>
+<pre>Configura la integración continua y el despliegue:
+1. GitHub Actions por repositorio, en push y pull request a develop y main:
+   - Backend: encabezados, pruebas y cobertura; en main, también mutación, imagen Docker, despliegue y verificación de salud.
+   - Frontend: lint, i18n, build y Playwright; en main, también despliegue y Selenium en Edge.
+2. Script taiga_reportar.sh para el proyecto de Taiga indicado:
+   - Si una etapa falla, crea un issue y una tarea asignados al autor del commit, o comenta el issue si ya existía.
+   - Si la etapa vuelve a pasar, cierra el issue y la tarea.
+   - Pruébalo contra un Taiga simulado antes de usar el real.
+3. Dockerfiles, nginx como proxy de /api (mismo origen), un blueprint de Render y la inicialización de la base en Neon (planes gratuitos).
+4. Scripts de repositorio: nueva_rama, integrar, liberar y compilar_y_probar.
+
+Las credenciales nunca pasan por el chat: van como secretos de GitHub o se escriben en la terminal sin mostrarse.</pre>
+<table><tr><th>Entregables</th><td>Workflows, scripts, Dockerfiles, render.yaml y 01_cicd_y_taiga.md.</td></tr><tr><th>Cómo se verificó</th><td>El pipeline real encontró dos defectos (nombre de la imagen en GHCR y una región desplazable sin acceso por teclado), que se corrigieron en la v1.0.2; el sistema quedó en línea.</td></tr></table>
+</section><section class="prompt">
+<div class="cab"><span class="num">24</span><span class="chip">Fase 7 · Métricas</span></div>
+<h2>Fase 7 — Métricas y monitoreo</h2>
+<p class="obj"><b>Objetivo:</b> Medir el trabajo del equipo y la salud de la aplicación con datos reales.</p>
+<pre>Implementa:
+1. Registro de errores 500 con correlación. Si el mismo error ocurre 5 veces en 10 minutos en la misma ruta, crea un solo issue &quot;[Producción]&quot; en Taiga.
+2. Endpoints de monitoreo para el ADMIN: errores con su referencia en Taiga y métricas de operación (ventas del día, anulaciones, productos sin existencias, valor del inventario, errores, accesos denegados e intentos de ingreso fallidos).
+3. Script metricas_taiga.py que lea el proyecto real de Taiga y calcule:
+   - avance del tablero;
+   - tareas e issues abiertos y cerrados por integrante;
+   - horas promedio de resolución;
+   - fallos de CI y errores de producción.
+4. Script cargar_backlog.py que cree en Taiga una historia por módulo y una tarea por requisito (simulación por defecto).
+
+Prueba el reporte de errores recurrentes con Taiga simulado.</pre>
+<table><tr><th>Entregables</th><td>Monitoreo en el backend, scripts de métricas y backlog, y 01_metricas_y_monitoreo.md.</td></tr><tr><th>Cómo se verificó</th><td>MonitoreoIT: 6 errores iguales generan un solo issue; las métricas se leyeron del Taiga real.</td></tr></table>
+</section><section class="prompt">
+<div class="cab"><span class="num">25</span><span class="chip">Transversal</span></div>
+<h2>Prompts de verificación y corrección (usados en todas las fases)</h2>
+<p class="obj"><b>Objetivo:</b> Evitar dar por bueno lo que no se probó.</p>
+<pre>• &quot;Antes de decir que está listo, corre la batería completa y dame los números reales (pasan, fallan, omitidas). Si algo falla, distingue un fallo real de un problema del entorno o de la prueba, y explícalo.&quot;
+
+• &quot;Este error de E2E solo aparece en móvil: reprodúcelo localmente, encuentra la causa raíz y corrige el código, no la prueba, salvo que la prueba esté mal planteada.&quot;
+
+• &quot;Revisa con axe la página y los diálogos abiertos. Si hay violaciones WCAG A/AA, corrígelas en el componente compartido para que no se repitan en otras pantallas.&quot;
+
+• &quot;Haz una verificación manual de punta a punta con la base real y compara el kardex y el costo promedio con un cálculo hecho a mano.&quot;
+
+• &quot;Actualiza el informe con lo que de verdad pasó: qué falló, por qué y cómo se corrigió.&quot;</pre>
+<table><tr><th>Entregables</th><td>Informes con resultados reales y defectos documentados.</td></tr><tr><th>Cómo se verificó</th><td>Así aparecieron y se corrigieron, entre otros, la prueba dependiente del orden por CSRF, la regla Yup de productos repetidos y el contraste durante animaciones.</td></tr></table>
+</section>
+</body></html>
