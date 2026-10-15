@@ -1,0 +1,179 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><title>FerreStock — Guía del proyecto para el equipo</title>
+<style>
+@page { size: A4; }
+body { font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; color:#1f2328; font-size:9.6pt; line-height:1.38; }
+h1 { color:#8a4b14; font-size:20pt; margin:0 0 2px; }
+h2 { color:#8a4b14; font-size:12.5pt; margin:12px 0 4px; border-bottom:1.5px solid #e3d8c8; padding-bottom:2px; }
+h3 { font-size:10.5pt; margin:8px 0 3px; }
+p { margin:3px 0; } ul { margin:3px 0 3px 16px; padding:0; } li { margin:1px 0; }
+table { border-collapse:collapse; width:100%; margin:4px 0 6px; font-size:8.8pt; }
+th { background:#f6f1ea; text-align:left; border:1px solid #e3d8c8; padding:3px 5px; vertical-align:top; }
+td { border:1px solid #e3d8c8; padding:3px 5px; vertical-align:top; }
+.meta td, .meta th { font-size:8.5pt; padding:2px 5px; }
+code { font-family: Menlo, Consolas, monospace; font-size:8.3pt; background:#f6f3ef; padding:0 2px; border-radius:2px; }
+pre { font-family: Menlo, monospace; font-size:8.2pt; background:#faf8f5; border-left:3px solid #b8692a; padding:6px 8px; margin:4px 0; white-space:pre-wrap; }
+.nota { background:#fff7e8; border:1px solid #f0dcb4; padding:5px 8px; border-radius:4px; margin:5px 0; }
+.salto { page-break-before: always; }
+.dos { display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+</style></head><body>
+
+<h1>FerreStock · Guía del proyecto</h1>
+<p style="color:#555;margin-bottom:6px">Documento interno para que los tres integrantes entendamos y podamos explicar todo el sistema.</p>
+<table class="meta">
+<tr><th>Autores</th><td>Ana Sofía Nagles García · María Mercedes Rincón Valencia · Juan David Camacho Tapiero</td><th>Versión</th><td>1.0.0 (2026-10-15)</td></tr>
+<tr><th>Sistema en línea</th><td>https://ferrestock-wtrq.onrender.com</td><th>Repositorios</th><td>GitHub <code>Ananagl/ferrestock-backend</code>, <code>-frontend</code>, <code>-docs</code></td></tr>
+<tr><th>Taiga</th><td colspan="3">tree.taiga.io/project/ananagls-inventario_ferreteria_ia_2026 (Kanban; issues activos)</td></tr>
+</table>
+
+<h2>1. Qué es FerreStock en una frase</h2>
+<p>Es un sistema web de inventario para una ferretería. Registra productos, clientes y proveedores, compras, ventas con pago en efectivo, devoluciones y ajustes. Lleva el <b>kardex</b> y el <b>costo promedio ponderado (CPP)</b> y emite comprobantes simulados. Tiene dos roles: <b>Administrador</b> (todo) y <b>Operativo</b> (vende, compra y devuelve, pero no ve costos, ajustes, usuarios ni auditoría).</p>
+
+<h2>2. Cómo está montado</h2>
+<pre>Navegador
+  └─► Frontend: React servido por nginx (Render)     ferrestock-wtrq.onrender.com
+        └─ /api ─► Backend: Spring Boot en Docker (Render)
+                      └─► PostgreSQL 17 (Neon), proyecto "ferrestock"</pre>
+<ul>
+<li><b>Mismo origen:</b> el navegador solo habla con el frontend. nginx reenvía <code>/api</code> al backend, así las cookies de sesión y CSRF funcionan sin CORS.</li>
+<li><b>Todo es gratis:</b> Render (2 servicios Docker) y Neon (PostgreSQL 17). En el plan gratis de Render el servicio "se duerme" tras 15 minutos sin uso: la primera visita tarda cerca de 1 minuto. <b>Abrirlo antes de presentar.</b></li>
+<li><b>Tres repositorios:</b> backend, frontend y docs. Ramas <code>main</code> (lo desplegable), <code>develop</code> (integración) y <code>feature/*</code> (una por incremento); commits en formato Conventional Commits en español.</li>
+</ul>
+
+<h2>3. Tecnologías y para qué sirve cada una</h2>
+<table>
+<tr><th style="width:17%">Capa</th><th style="width:33%">Tecnología</th><th>Para qué la usamos</th></tr>
+<tr><td>Backend</td><td>Java 21, Spring Boot 3.5, Maven</td><td>API REST <code>/api/v1/...</code>; Spring Web, Security, Data JPA, Validation, Actuator (salud)</td></tr>
+<tr><td></td><td>JPA/Hibernate + Lombok</td><td>Entidades y repositorios sin código repetitivo (<code>@Getter</code>, <code>@Builder</code>…)</td></tr>
+<tr><td></td><td>springdoc OpenAPI · Javadoc</td><td>Documentación de la API (Swagger solo en desarrollo) y del código</td></tr>
+<tr><td>Base de datos</td><td>PostgreSQL 17 (Neon) · scripts SQL</td><td>Esquema con restricciones, triggers y datos iniciales en <code>db/01_esquema.sql</code> y <code>db/02_datos_iniciales.sql</code></td></tr>
+<tr><td>Frontend</td><td>React 19, Vite, Material UI 9</td><td>Interfaz por módulos, tema claro/oscuro con <b>tokens de diseño</b>, responsive</td></tr>
+<tr><td></td><td>Formik + Yup · i18next · Axios</td><td>Formularios con validación igual a la del backend · español e inglés · cliente HTTP con CSRF e idioma</td></tr>
+<tr><td>Pruebas</td><td>JUnit 5, Mockito, Spring Test, Testcontainers</td><td>Unitarias e integración contra un <b>PostgreSQL real</b> en contenedor</td></tr>
+<tr><td></td><td>Playwright + axe · Selenium · PIT · k6</td><td>E2E y accesibilidad · compatibilidad (Edge/Chrome) · mutación · carga y estrés</td></tr>
+<tr><td>Entrega</td><td>GitHub Actions · Docker · Render · Taiga</td><td>CI/CD; imagen de cada servicio; hosting; issues, tareas y métricas del equipo</td></tr>
+</table>
+
+<div class="salto"></div>
+<h2>4. Backend: cómo está organizado</h2>
+<ul>
+<li><b>Paquetes por módulo</b> (<code>com.ferrestock.&lt;modulo&gt;</code>): autenticacion, usuarios, catalogo, terceros, inventario, ajustes, compras, ventas, devoluciones, comprobantes, auditoria y monitoreo, más <code>compartido</code> (errores, montos, seguridad) y <code>configuracion</code>.</li>
+<li><b>Capas:</b> <code>Controller</code> (HTTP y permisos con <code>@PreAuthorize</code>) → <code>Service</code> (reglas de negocio y transacciones) → <code>Repository</code> (JPA). Los DTO de entrada se validan con anotaciones (<code>@NotBlank</code>, <code>@Digits</code>…) y mensajes traducidos.</li>
+<li><b>Errores:</b> siempre con el mismo formato (ProblemDetail, RFC 9457): <code>codigo</code> estable (por ejemplo <code>EXISTENCIAS_INSUFICIENTES</code>), mensaje en el idioma del usuario y <code>errores</code> por campo, que el formulario muestra junto al campo. Un error inesperado devuelve 500 con un código de correlación y queda registrado.</li>
+<li><b>Montos exactos:</b> <code>BigDecimal</code> con cantidades a 3 decimales, costos a 4 y dinero a 2 (HALF_UP). Viajan como texto en el JSON para no perder precisión.</li>
+<li><b>Encabezado</b> en todos los archivos (nombre, descripción, fechas, autores, versión); <code>scripts/verificar_encabezados.sh</code> lo revisa en el CI.</li>
+</ul>
+
+<h3>El corazón: inventario, costo promedio y concurrencia</h3>
+<ul>
+<li><code>MovimientoInventarioServicio</code> es <b>el único</b> que cambia existencias y CPP. Cada compra, venta, devolución, ajuste o anulación deja un movimiento en el <b>kardex</b> (con el saldo y el CPP resultantes). La base de datos impide editar o borrar el kardex con un trigger.</li>
+<li><b>CPP</b> = (existencias × CPP actual + cantidad × costo de entrada) / (existencias + cantidad). Ejemplo: 10 a 1.000 + 30 a 1.400 = 40 unidades a <b>1.300</b>. Las salidas salen al CPP vigente.</li>
+<li><b>Nunca existencias negativas</b>, ni con dos cajas vendiendo a la vez: los productos se bloquean (<code>SELECT … FOR UPDATE</code>) en orden de id dentro de la transacción. Además hay un <code>CHECK (existencias &gt;= 0)</code> en la base. Probado: 2 ventas simultáneas de la última unidad confirman exactamente 1.</li>
+<li><b>Consecutivos</b> (<code>VEN-000001</code>, <code>COM-</code>, <code>DEV-</code>, <code>AJU-</code>) en una tabla con bloqueo de fila: no se repiten y no dejan huecos.</li>
+<li><b>Anulaciones (solo ADMIN, con motivo):</b> un documento no se borra, se anula con un movimiento compensatorio. Una compra no se anula si ya se vendió lo comprado o hubo entradas después; una venta no se anula si tiene devoluciones.</li>
+</ul>
+
+<h3>Seguridad</h3>
+<table>
+<tr><th style="width:28%">Mecanismo</th><th>Cómo funciona</th></tr>
+<tr><td>Sesión de servidor</td><td>Cookie <code>FSSESSION</code> HttpOnly y Secure; las contraseñas se guardan con BCrypt</td></tr>
+<tr><td>Sesión persistente</td><td>"Recordarme" 7 días con token persistente en BD (cookie <code>FSRECUERDAME</code>)</td></tr>
+<tr><td>CSRF</td><td>Cookie <code>XSRF-TOKEN</code> + cabecera <code>X-XSRF-TOKEN</code> en cada POST/PUT/PATCH</td></tr>
+<tr><td>Roles</td><td><code>@PreAuthorize</code> en cada endpoint: el backend responde 403 aunque el frontend oculte la opción; el intento queda auditado</td></tr>
+<tr><td>Cuentas</td><td>Bloqueo tras 5 intentos fallidos; contraseña temporal que se debe cambiar; si el ADMIN desactiva a alguien o le cambia el rol, su sesión se corta en la siguiente petición</td></tr>
+<tr><td>Auditoría</td><td>Login, cambios de usuarios, productos, precios, documentos y accesos denegados; inmodificable (trigger)</td></tr>
+</table>
+
+<div class="salto"></div>
+<h2>5. Frontend: cómo está organizado</h2>
+<div class="dos"><div>
+<ul>
+<li><code>src/modulos/&lt;modulo&gt;/</code> con <code>servicios</code> (llamadas a la API), <code>paginas</code>, <code>componentes</code> y <code>validacion</code> (esquemas Yup).</li>
+<li><code>src/compartido/</code>: tabla paginada (tarjetas en móvil), campos de formulario, editor de líneas de documentos, diálogos de confirmación y anulación, formatos de COP y fechas.</li>
+<li><b>Rutas protegidas</b> por sesión y rol; cada pantalla se carga solo cuando se visita.</li>
+<li><b>Sesión persistente:</b> al recargar, la app consulta <code>/auth/sesion</code> y restaura el usuario.</li>
+</ul></div><div>
+<ul>
+<li><b>Validación doble:</b> Yup en el navegador (respuesta inmediata) y Bean Validation en el servidor (seguridad). Los errores del servidor llegan al campo correcto.</li>
+<li><b>i18n:</b> español e inglés, 14 namespaces; un script verifica que no falte ninguna traducción.</li>
+<li><b>Accesibilidad:</b> axe-core en las E2E (WCAG A/AA), foco al primer error, etiquetas, contraste y navegación con teclado.</li>
+<li><b>Tokens de diseño</b> y tema claro/oscuro; JSDoc en cada archivo.</li>
+</ul></div></div>
+
+<h2>6. Base de datos</h2>
+<ul>
+<li>14 tablas: usuario, categoria, producto, tercero, compra(+linea), venta(+linea), devolucion(+linea), ajuste, movimiento_inventario (kardex), consecutivo, auditoria, registro_error y persistent_logins.</li>
+<li><b>Las reglas también viven en la base:</b> <code>CHECK</code> (existencias ≥ 0, cambio = recibido − total, motivo obligatorio si está anulada), <code>UNIQUE</code> (código de producto, documento del tercero, un producto por línea), claves foráneas y triggers de inmutabilidad.</li>
+<li>Hibernate solo <b>valida</b> el esquema (<code>ddl-auto=validate</code>); el esquema lo crean los scripts SQL. En local: <code>db/crear_bd.sh</code>. En la nube: <code>db/inicializar_remota.sh</code> (así se inicializó Neon).</li>
+</ul>
+
+<h2>7. Cómo se hicieron las pruebas</h2>
+<table>
+<tr><th style="width:20%">Tipo</th><th style="width:44%">Qué se probó</th><th>Resultado real</th></tr>
+<tr><td>Unitarias</td><td>Reglas de servicios con Mockito, cálculo del CPP, validador de NIT (módulo 11), contraseñas</td><td>75 pasan</td></tr>
+<tr><td>Integración / sistema</td><td>Cada endpoint contra PostgreSQL real (Testcontainers): contratos HTTP, errores, kardex, CPP y anulaciones</td><td>86 pasan</td></tr>
+<tr><td>Seguridad</td><td>403 por rol, CSRF, bloqueo de cuenta, sesión cortada al desactivar, costos ocultos al operativo</td><td>incluidas en las 161</td></tr>
+<tr><td>Estrés y límite</td><td>2 ventas simultáneas de 1 unidad → 1; 20 salidas sobre 10 → 10; 50 consecutivos distintos; decimales y ceros rechazados</td><td>pasan</td></tr>
+<tr><td>Mutación (PIT)</td><td>Cambia el código a propósito y revisa si las pruebas lo detectan</td><td>25 % (fuerza 83 %)*</td></tr>
+<tr><td>E2E (Playwright)</td><td>Escenarios de aceptación en Chromium, Firefox y móvil, más axe</td><td>216 pasan (matriz)</td></tr>
+<tr><td>Compatibilidad</td><td>Selenium: ingreso, idioma, venta y sesión contra la app real</td><td>3 pasan</td></tr>
+<tr><td>Carga (k6)</td><td>Listados concurrentes, 200 ventas del mismo producto, picos</td><td>scripts listos**</td></tr>
+</table>
+<p style="font-size:8.5pt">* PIT solo corre las unitarias; los servicios de documentos se prueban sobre todo con integración, por eso el porcentaje es bajo y la fuerza alta. ** k6 no estaba instalado en el equipo; se corren con <code>k6 run</code> (ver <code>pruebas-carga/README.md</code>). El catálogo completo (220 casos) está en <code>docs/fase-5-pruebas/01_catalogo_casos.md</code>.</p>
+<pre>./mvnw verify                      # backend completo (Docker abierto para Testcontainers)
+npm test && npx playwright test    # frontend: lint, i18n y E2E
+scripts/compilar_y_probar.sh       # todo el sistema</pre>
+
+<div class="salto"></div>
+<h2>8. CI/CD y Taiga</h2>
+<pre>push o pull request a develop / main  ─►  GitHub Actions
+  ├─ backend:  encabezados → unitarias + integración (PostgreSQL) → cobertura
+  │            en main además: mutación → imagen Docker → despliegue → salud
+  ├─ frontend: lint → i18n → build → Playwright (3 navegadores)
+  │            en main además: despliegue → Selenium en Edge
+  └─ reportar (siempre):
+       ¿falló algo? ─ sí ─► issue + tarea en Taiga para el autor del commit (aviso por correo)
+                    └ no ─► cierra el issue abierto de esa etapa, si lo había</pre>
+<ul>
+<li><b>Despliega solo si todo pasa:</b> Render tiene el auto-deploy apagado. El job <code>desplegar</code> llama al deploy hook de Render cuando todas las etapas anteriores están en verde; sin hook, se despliega con <b>Manual Deploy</b> en Render.</li>
+<li><b>Taiga:</b> <code>scripts/ci/taiga_reportar.sh</code> se autentica con los secretos <code>TAIGA_USUARIO</code> y <code>TAIGA_CLAVE</code> de GitHub. No duplica issues: si ya hay uno abierto, lo comenta. Mapeo GitHub → Taiga en <code>.taiga/miembros.json</code> (Ananagl, JuanDav-L, mariam7799). <b>Evidencia:</b> issue #85 creado y cerrado automáticamente.</li>
+<li><b>Backlog:</b> <code>scripts/taiga/cargar_backlog.py</code> creó 14 historias (una por módulo de requisitos) y 70 tareas (una por requisito).</li>
+<li><b>Scripts del repositorio:</b> <code>nueva_rama.sh</code>, <code>integrar.sh</code>, <code>liberar.sh</code> (crea la etiqueta vX.Y.Z) y <code>compilar_y_probar.sh</code>. Versión actual en producción: v1.0.2.</li>
+<li><b>El CI sí encontró errores reales:</b> el nombre de la imagen de Docker debía ir en minúsculas, y en móvil faltaba que la tabla del comprobante fuera accesible con teclado. Ambos se corrigieron en la v1.0.2.</li>
+</ul>
+
+<h2>9. Métricas y monitoreo</h2>
+<ul>
+<li><b>Del equipo</b> (<code>scripts/metricas/metricas_taiga.py</code>, lee el Taiga real): avance del tablero (hoy 93 %), tareas e issues abiertos y cerrados por integrante, horas promedio de resolución, fallos de CI y errores de producción.</li>
+<li><b>De la aplicación:</b> cada error 500 queda en <code>registro_error</code> con su correlación. Si el mismo error ocurre <b>5 veces en 10 minutos</b> en la misma ruta, el backend crea solo <b>un</b> issue "[Producción]" en Taiga. El ADMIN consulta <code>/api/v1/monitoreo/errores</code> y <code>/monitoreo/metricas</code> (ventas del día, anulaciones, productos sin existencias, valor del inventario, errores y accesos denegados).</li>
+</ul>
+
+<div class="salto"></div>
+<h2>10. Requisitos del enunciado y dónde se cumplen</h2>
+<table>
+<tr><th style="width:26%">Requisito</th><th>Cómo se cumple / dónde mostrarlo</th></tr>
+<tr><td>Java, Spring Boot, JPA, Lombok</td><td>Repositorio backend; entidades en <code>*/entidad</code>, repositorios JPA, Lombok en entidades y servicios</td></tr>
+<tr><td>Validaciones</td><td>Bean Validation en DTO + reglas en servicios + <code>CHECK</code> en BD + Yup en el frontend</td></tr>
+<tr><td>Seguridad y autenticación</td><td>Spring Security: sesión, Recordarme, CSRF, roles, bloqueo y auditoría (sección 4)</td></tr>
+<tr><td>Javadoc, OpenAPI, JSON</td><td><code>mvn javadoc:javadoc</code>; Swagger en el perfil dev; respuestas JSON y ProblemDetail</td></tr>
+<tr><td>i18n</td><td>Backend: <code>mensajes.properties</code> es/en según <code>Accept-Language</code>. Frontend: selector de idioma</td></tr>
+<tr><td>Encabezados de archivos</td><td>En todos los archivos; verificados por script en el CI</td></tr>
+<tr><td>React, MUI, responsive, accesible</td><td>Tablas que pasan a tarjetas en móvil; axe sin violaciones; tema claro/oscuro</td></tr>
+<tr><td>Tokens de diseño, Formik, Yup, JSDoc</td><td><code>src/app/tema</code> (tokens), formularios con Formik + Yup, JSDoc en cada componente</td></tr>
+<tr><td>Sesión persistente</td><td>"Recordarme" 7 días; la sesión se restaura al recargar</td></tr>
+<tr><td>Pruebas (todos los tipos)</td><td>Sección 7; catálogo de 220 casos; informe en <code>docs/fase-5-pruebas</code></td></tr>
+<tr><td>Scripts de BD, compilación y repositorio</td><td><code>db/*.sh</code>, <code>scripts/*.sh</code> del backend, <code>scripts/repositorio</code> y <code>compilar_y_probar.sh</code></td></tr>
+<tr><td>CI/CD: desplegar si pasa; si falla, issues, tareas y notificación en Taiga</td><td>Sección 8; evidencia: issue #85 y la historia "Fallos de CI"</td></tr>
+<tr><td>Métricas y monitoreo en Taiga</td><td>Sección 9; <code>docs/fase-7-metricas</code></td></tr>
+<tr><td>Documentación por fases</td><td>Repositorio docs: fases 1 a 7, ADRs, informes por incremento, PDF de prompts</td></tr>
+</table>
+
+<h2>11. Guion sugerido para la demo (10 minutos)</h2>
+<ol>
+<li>Abrir el sistema (1 minuto antes, por el plan gratis) → entrar como <b>admin</b> → cambiar de idioma y de tema.</li>
+<li><b>Ajuste</b> de inventario inicial (20 a $400) → <b>compra</b> (10 a $550) → mostrar el kardex con <b>CPP $450</b>.</li>
+<li><b>Venta</b> de 5 pagando $10.000 → cambio → <b>comprobante</b> con la leyenda de documento simulado → <b>devolución</b> de 2 desde la venta.</li>
+<li>Entrar como <b>operativo</b>: no ve costos ni ajustes; si escribe la URL de auditoría ve "Acceso denegado".</li>
+<li><b>Auditoría</b> filtrada por usuario → <b>GitHub Actions</b> (pipeline en verde) → <b>Taiga</b> (issue #85 cerrado, tablero al 93 %).</li>
+</ol>
+<div class="nota"><b>Preguntas probables:</b> "¿qué pasa si dos venden la última unidad a la vez?" → bloqueo FOR UPDATE + CHECK; probado con hilos reales. · "¿por qué no se borran documentos?" → trazabilidad: se anulan con movimiento compensatorio. · "¿cómo se calcula el costo?" → CPP ponderado con BigDecimal (ejemplo 1.300). · "¿qué pasa cuando falla una prueba?" → no se despliega y se crea un issue en Taiga asignado al autor del commit.</div>
+</body></html>
