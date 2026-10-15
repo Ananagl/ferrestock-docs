@@ -35,6 +35,7 @@ docs/
   fase-2-diseno/        Arquitectura, modelo de datos, inventario y costos, API, seguridad, frontend,
                         flujos críticos, repositorios y CI/CD con Taiga, decisiones técnicas
   fase-3-preparacion/   Informe de verificación y plan de implementación
+  fase-4-implementacion/ Informes de cada incremento
 ferrestock-backend/     Repositorio Git del backend (Spring Boot)
 ferrestock-frontend/    Repositorio Git del frontend (React)
 ```
@@ -47,8 +48,8 @@ Esta carpeta es el repositorio de documentación; `ferrestock-backend` y `ferres
 |---|---|---|
 | 1 | Análisis y requisitos | Aprobada (v0.3.0) |
 | 2 | Diseño técnico | Aprobada (v0.1.0) |
-| 3 | Preparación de repositorios | Terminada, en revisión |
-| 4 | Implementación | Pendiente |
+| 3 | Preparación de repositorios | Aprobada |
+| 4 | Implementación | En curso: incremento 1 de 11 terminado |
 | 5 | Pruebas | Pendiente |
 | 6 | Despliegue y CI/CD con Taiga | Pendiente |
 | 7 | Métricas y monitoreo | Pendiente |

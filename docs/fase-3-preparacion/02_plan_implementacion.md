@@ -8,8 +8,8 @@
 | **Fecha de creación** | 2026-10-15 |
 | **Fecha de actualización** | 2026-10-15 |
 | **Autores** | Ana Sofía Nagles García · María Mercedes Rincón Valencia · Juan David Camacho Tapiero |
-| **Versión** | 0.1.0 |
-| **Estado** | En revisión |
+| **Versión** | 0.2.0 |
+| **Estado** | Aprobado por el equipo (2026-10-15) |
 
 ---
 
@@ -17,7 +17,7 @@ Cada incremento incluye el backend (entidad, repositorio, servicio, controlador,
 
 | # | Incremento | Requisitos | Escenarios que deben pasar | Depende de |
 |---|---|---|---|---|
-| 1 | Autenticación: login, "Recordarme", logout, bloqueo, cambio de contraseña; auditoría base; layout con menú por rol | RF-AUT-001 a 005, 007, 008; RF-AUD-001 | CA-AUT-01 a 06, 08 | — |
+| 1 ✅ | Autenticación: login, "Recordarme", logout, bloqueo, cambio de contraseña; auditoría base y API de consulta de auditoría; layout con menú por rol | RF-AUT-001 a 005, 007, 008; RF-AUD-001, RF-AUD-002 (API) | CA-AUT-01 a 06, 08 | — |
 | 2 | Usuarios (ADMIN) | RF-AUT-006 | CA-AUT-07 | 1 |
 | 3 | Categorías y productos, cambio de precio | RF-PRO-001 a 009, RF-PRE | CA-PRO-01 a 10, CA-PRE-01, 02 | 1 |
 | 4 | Terceros (validación de NIT) | RF-TER | CA-TER-01 a 04 | 1 |
@@ -27,7 +27,7 @@ Cada incremento incluye el backend (entidad, repositorio, servicio, controlador,
 | 8 | Ventas con pago en efectivo y su anulación | RF-VEN, RF-PAG | CA-VEN-01 a 06, CA-PAG-01, 02 | 4, 5 |
 | 9 | Devoluciones | RF-DEV, RF-COS-003 | CA-DEV-01 a 03, CA-COS-03 | 8 |
 | 10 | Comprobantes imprimibles | RF-DOC-002 a 005 | CA-DOC-01 a 03 | 7, 8, 9 |
-| 11 | Consulta de auditoría y valorización | RF-AUD-002, RF-COS-002 | CA-AUD-01, 02 | 1 a 10 |
+| 11 | Pantalla de consulta de auditoría y valorización | RF-AUD-002 (pantalla), RF-COS-002 | CA-AUD-01, 02 | 1 a 10 |
 
 **Reparto sugerido** (se asigna en Taiga):
 

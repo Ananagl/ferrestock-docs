@@ -9,7 +9,7 @@
 | **Fecha de actualización** | 2026-10-15 |
 | **Autores** | Ana Sofía Nagles García · María Mercedes Rincón Valencia · Juan David Camacho Tapiero |
 | **Versión** | 0.1.0 |
-| **Estado** | En revisión |
+| **Estado** | Aprobado por el equipo (2026-10-15) |
 
 ---
 
