@@ -20,7 +20,7 @@
 | URL | https://tree.taiga.io/project/ananagls-inventario_ferreteria_ia_2026/kanban |
 | Id del proyecto | 1811096 (Kanban) |
 | Asignado por defecto | `ananagls` (id 905420) |
-| Mapeo GitHub → Taiga | `.taiga/miembros.json` en cada repositorio |
+| Mapeo GitHub → Taiga | `Ananagl` → ananagls (905420), `JuanDav-L` → JuanDavL (905403), `mariam7799` → kiwi.797 (905265), en `.taiga/miembros.json` |
 
 ## 2. Pipelines (`.github/workflows/ci.yml`)
 
