@@ -1,22 +1,48 @@
 {
   "proyecto": "Inventario_Ferreteria_IA_2026",
-  "generado": "2026-10-15T13:58:04+00:00",
+  "generado": "2026-10-15T14:54:20+00:00",
   "historias": {
-    "total": 0,
-    "cerradas": 0,
-    "avance_porcentaje": 0,
-    "por_estado": {}
+    "total": 15,
+    "cerradas": 14,
+    "avance_porcentaje": 93.3,
+    "por_estado": {
+      "Done": 13,
+      "New": 2
+    }
   },
-  "tareas_por_integrante": {},
-  "historias_por_integrante": {},
-  "issues_por_integrante": {},
+  "tareas_por_integrante": {
+    "Ana Nagles": {
+      "abiertos": 0,
+      "cerrados": 1,
+      "horas_promedio_resolucion": 0.0
+    },
+    "Sin asignar": {
+      "abiertos": 6,
+      "cerrados": 64,
+      "horas_promedio_resolucion": 0.0
+    }
+  },
+  "historias_por_integrante": {
+    "Sin asignar": {
+      "abiertos": 1,
+      "cerrados": 14,
+      "horas_promedio_resolucion": 0.0
+    }
+  },
+  "issues_por_integrante": {
+    "Ana Nagles": {
+      "abiertos": 0,
+      "cerrados": 1,
+      "horas_promedio_resolucion": 0.0
+    }
+  },
   "ci": {
-    "fallos_total": 0,
+    "fallos_total": 1,
     "fallos_abiertos": 0
   },
   "errores_produccion": {
     "total": 0,
     "abiertos": 0
   },
-  "modulo_issues_activo": false
+  "modulo_issues_activo": true
 }

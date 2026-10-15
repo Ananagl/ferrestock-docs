@@ -86,3 +86,12 @@ TAIGA_USUARIO=ananagls TAIGA_PROYECTO_ID=1811096 REPO=prueba RAMA=develop COMMIT
 
 1. **Imagen de GHCR:** el nombre debe ir en minúsculas (`Ananagl` → `ananagl`).
 2. **Accesibilidad:** en móvil, la tabla desplazable del comprobante no era alcanzable con el teclado (axe: `scrollable-region-focusable`). La matriz completa del CI pasó 227 de 228 pruebas y esa última quedó corregida.
+
+## 6. Verificación con el Taiga real (2026-10-15)
+
+- Secretos `TAIGA_USUARIO` y `TAIGA_CLAVE` configurados en los dos repositorios. El job `reportar` del pipeline se autentica en Taiga y termina en éxito.
+- Prueba del flujo completo: se reportó un fallo de la etapa `prueba-integracion-taiga`.
+  - Taiga creó el **issue #85** `[CI] ferrestock-backend · prueba-integracion-taiga falló en develop`, asignado a `ananagls`.
+  - También creó la tarea en la historia "Fallos de CI".
+  - Al reportar el éxito, el issue y la tarea se cerraron.
+- Backlog cargado con `scripts/taiga/cargar_backlog.py`: 14 historias (una por módulo RF) y 70 tareas (una por requisito), más la historia "Fallos de CI" que crea el pipeline.
