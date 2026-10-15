@@ -60,7 +60,7 @@ def main():
         return
     usuario = os.environ.get("TAIGA_USUARIO") or input("Usuario de Taiga: ")
     try:
-        token = llamar("POST", "/auth", {"type": "normal", "username": usuario, "password": getpass.getpass("Clave de Taiga: ")})["auth_token"]
+        token = llamar("POST", "/auth", {"type": "normal", "username": usuario, "password": os.environ.get("TAIGA_CLAVE") or getpass.getpass("Clave de Taiga: ")})["auth_token"]
     except urllib.error.HTTPError as e:
         if e.code in (400, 401):
             raise SystemExit("Taiga rechazó el usuario o la clave. Si la cuenta se creó con GitHub o Google, "
