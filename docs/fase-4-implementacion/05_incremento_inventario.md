@@ -9,7 +9,7 @@
 | **Fecha de actualización** | 2026-10-15 |
 | **Autores** | Ana Sofía Nagles García · María Mercedes Rincón Valencia · Juan David Camacho Tapiero |
 | **Versión** | 0.1.0 |
-| **Estado** | En revisión |
+| **Estado** | Aprobado por el equipo (2026-10-15) |
 
 ---
 
@@ -59,5 +59,5 @@ Este incremento construye el **núcleo** que usarán ajustes, compras, ventas y 
 
 ## 4. Pendiente
 
-- La revisión por otro integrante y la fusión de `feature/inventario` a `develop`.
+- ~~Fusión a `develop`~~: hecha el 2026-10-15 tras la aprobación del equipo.
 - La verificación manual de punta a punta con movimientos reales se hará en el incremento 6 (ajustes), que es la primera operación que crea movimientos desde la interfaz.
