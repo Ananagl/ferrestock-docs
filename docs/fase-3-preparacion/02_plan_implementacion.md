@@ -21,7 +21,7 @@ Cada incremento incluye el backend (entidad, repositorio, servicio, controlador,
 | 2 ✅ | Usuarios (ADMIN), con cierre de sesiones al desactivar, cambiar rol o restablecer | RF-AUT-006 | CA-AUT-07 | 1 |
 | 3 ✅ | Categorías y productos, cambio de precio (CA-PRO-07 y 09 se verifican en los incrementos 7 y 8) | RF-PRO-001 a 009, RF-PRE, RF-COS-002 (API) | CA-PRO-01 a 06, 08, 10, CA-PRE-01, 02 | 1 |
 | 4 ✅ | Terceros (validación de NIT) | RF-TER | CA-TER-01 a 04 | 1 |
-| 5 | Inventario: `MovimientoInventarioService`, existencias, kardex, consecutivos | RF-INV, RF-COS-001, 002, RF-DOC-001 | CA-INV-01, 02 | 3 |
+| 5 ✅ | Inventario: `MovimientoInventarioService`, existencias, kardex, consecutivos | RF-INV, RF-COS-001, 002, RF-DOC-001 | CA-INV-01, 02 | 3 |
 | 6 | Ajustes (incluido el inventario inicial) | RF-AJU | CA-AJU-01 a 04 | 5 |
 | 7 | Compras y su anulación | RF-COM | CA-COM-01 a 04, CA-COS-01, 02 | 4, 5 |
 | 8 | Ventas con pago en efectivo y su anulación | RF-VEN, RF-PAG | CA-VEN-01 a 06, CA-PAG-01, 02 | 4, 5 |
