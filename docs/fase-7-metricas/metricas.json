@@ -1,0 +1,22 @@
+{
+  "proyecto": "Inventario_Ferreteria_IA_2026",
+  "generado": "2026-10-15T13:58:04+00:00",
+  "historias": {
+    "total": 0,
+    "cerradas": 0,
+    "avance_porcentaje": 0,
+    "por_estado": {}
+  },
+  "tareas_por_integrante": {},
+  "historias_por_integrante": {},
+  "issues_por_integrante": {},
+  "ci": {
+    "fallos_total": 0,
+    "fallos_abiertos": 0
+  },
+  "errores_produccion": {
+    "total": 0,
+    "abiertos": 0
+  },
+  "modulo_issues_activo": false
+}

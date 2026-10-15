@@ -49,7 +49,7 @@ Esta carpeta es el repositorio de documentación; `ferrestock-backend` y `ferres
 | 1 | Análisis y requisitos | Aprobada (v0.3.0) |
 | 2 | Diseño técnico | Aprobada (v0.1.0) |
 | 3 | Preparación de repositorios | Aprobada |
-| 4 | Implementación | En curso: incrementos 1 a 9 de 11 terminados |
-| 5 | Pruebas | Pendiente |
-| 6 | Despliegue y CI/CD con Taiga | Pendiente |
-| 7 | Métricas y monitoreo | Pendiente |
+| 4 | Implementación | ✅ 11 de 11 incrementos |
+| 5 | Pruebas | ✅ docs/fase-5-pruebas (220 casos; k6 sin ejecutar) |
+| 6 | Despliegue y CI/CD con Taiga | ✅ docs/fase-6-cicd (falta publicar en GitHub y secretos) |
+| 7 | Métricas y monitoreo | ✅ docs/fase-7-metricas |

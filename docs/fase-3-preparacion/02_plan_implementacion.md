@@ -26,8 +26,8 @@ Cada incremento incluye el backend (entidad, repositorio, servicio, controlador,
 | 7 ✅ | Compras y su anulación | RF-COM | CA-COM-01 a 04, CA-COS-01, 02 | 4, 5 |
 | 8 ✅ | Ventas con pago en efectivo y su anulación | RF-VEN, RF-PAG | CA-VEN-01 a 06, CA-PAG-01, 02 | 4, 5 |
 | 9 ✅ | Devoluciones | RF-DEV, RF-COS-003 | CA-DEV-01 a 03, CA-COS-03 | 8 |
-| 10 | Comprobantes imprimibles | RF-DOC-002 a 005 | CA-DOC-01 a 03 | 7, 8, 9 |
-| 11 | Pantalla de consulta de auditoría y valorización | RF-AUD-002 (pantalla), RF-COS-002 | CA-AUD-01, 02 | 1 a 10 |
+| 10 ✅ | Comprobantes imprimibles | RF-DOC-002 a 005 | CA-DOC-01 a 03 | 7, 8, 9 |
+| 11 ✅ | Pantalla de consulta de auditoría y valorización | RF-AUD-002 (pantalla), RF-COS-002 | CA-AUD-01, 02 | 1 a 10 |
 
 **Reparto sugerido** (se asigna en Taiga):
 
