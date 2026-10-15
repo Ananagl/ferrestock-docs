@@ -9,7 +9,7 @@
 | **Fecha de actualización** | 2026-10-15 |
 | **Autores** | Ana Sofía Nagles García · María Mercedes Rincón Valencia · Juan David Camacho Tapiero |
 | **Versión** | 0.1.0 |
-| **Estado** | En revisión |
+| **Estado** | Aprobado por el equipo (2026-10-15) |
 
 ---
 
@@ -53,5 +53,5 @@ Nuevos elementos: el código de error `COSTO_UNITARIO_REQUERIDO` (400), la acci�
 
 ## 3. Pendiente
 
-- La revisión por otro integrante y la fusión de `feature/ajustes` a `develop`.
+- ~~Fusión a `develop`~~: hecha el 2026-10-15 tras la aprobación del equipo.
 - La anulación de documentos no aplica a los ajustes: se corrigen con otro ajuste en sentido contrario (DP-07).
