@@ -6,9 +6,9 @@
 | **Nombre** | 09_decisiones_tecnicas.md |
 | **Descripción** | Decisiones de arquitectura (ADR), resolución propuesta de las decisiones pendientes de la Fase 1, nuevas decisiones pendientes e impacto sobre los documentos de requisitos. |
 | **Fecha de creación** | 2026-10-14 |
-| **Fecha de actualización** | 2026-10-14 |
+| **Fecha de actualización** | 2026-10-15 |
 | **Autores** | Ana Sofía Nagles García · María Mercedes Rincón Valencia · Juan David Camacho Tapiero |
-| **Versión** | 0.1.0 |
+| **Versión** | 0.2.0 |
 | **Estado** | Aprobado por el equipo (2026-10-14) |
 
 ---
@@ -37,6 +37,7 @@ Todas las decisiones quedaron **aceptadas** por el equipo el 2026-10-14. Las mar
 | ADR-16 | CI/CD con GitHub Actions (gratuito para repositorios públicos o educativos) y pruebas de integración con Testcontainers | Jenkins propio; H2 | Costo COP $0; la integración se prueba contra PostgreSQL real | Aceptada |
 | ADR-17 | **Taiga** es la única herramienta de issues, tareas y notificaciones; GitHub Issues queda desactivado | Usar los dos | Decisión del equipo (RES-05); evita duplicar información | Aceptada |
 | ADR-18 | Comprobantes como vista HTML imprimible (`@media print`), sin generar PDF en el backend | JasperReports o OpenPDF | RF-DOC-002 pide "imprimible"; el navegador ya permite guardar como PDF | Aceptada |
+| ADR-19 | En cada petición a `/api/**` con sesión, un filtro consulta el usuario por id y cierra la sesión si fue desactivado, cambió de rol o se le restableció la contraseña (compara una huella SHA-256 del hash). También aplica el cambio obligatorio de contraseña | `SessionRegistry` de Spring (no cubre de forma fiable las sesiones restauradas con "Recordarme" y exige estado en memoria) | Una consulta por clave primaria tiene costo despreciable a este volumen; es simple, cubre todos los casos y funcionaría igual con varias instancias. Agregada en la Fase 4, incremento 2 (2026-10-15) | Aceptada (implementación) |
 
 ## 2. Resolución propuesta de las decisiones pendientes de la Fase 1
 

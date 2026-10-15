@@ -9,7 +9,7 @@
 | **Fecha de actualización** | 2026-10-15 |
 | **Autores** | Ana Sofía Nagles García · María Mercedes Rincón Valencia · Juan David Camacho Tapiero |
 | **Versión** | 0.1.0 |
-| **Estado** | En revisión |
+| **Estado** | Aprobado por el equipo (2026-10-15) |
 
 ---
 
@@ -53,6 +53,6 @@ En `ferrestock-backend/.env` (no versionado) quedó registrado el usuario `opera
 
 ## 4. Pendiente
 
-- La revisión del código por otro integrante y la fusión de `feature/autenticacion` a `develop` (convención de ramas aprobada).
-- La pantalla de consulta de auditoría (incremento 11) y la gestión de usuarios (incremento 2).
+- ~~Fusión a `develop`~~: hecha el 2026-10-15 tras la aprobación del equipo.
+- La pantalla de consulta de auditoría (incremento 11) y la gestión de usuarios (incremento 2, ya implementado).
 - Las pruebas de mutación (PIT) y la prueba con Selenium quedan para la Fase 5.
