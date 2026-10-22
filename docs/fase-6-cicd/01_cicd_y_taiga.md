@@ -78,6 +78,7 @@ TAIGA_USUARIO=ananagls TAIGA_PROYECTO_ID=1811096 REPO=prueba RAMA=develop COMMIT
 | Repositorios | GitHub (privados) | `Ananagl/ferrestock-backend`, `Ananagl/ferrestock-frontend`, `Ananagl/ferrestock-docs` |
 
 - **Prueba de humo (2026-10-15):** el backend responde `UP`, el frontend responde 200 y el proxy entrega la cookie `XSRF-TOKEN` en el dominio del frontend.
+- **Swagger (documentación de la API):** https://ferrestock-wtrq.onrender.com/swagger-ui.html, solo con sesión de ADMIN (v1.0.3).
 - **Primer ingreso:** usuario `admin` con la clave temporal guardada en `ferrestock-backend/.env` (`FS_PROD_ADMIN_CLAVE_INICIAL`, no se sube al repositorio). El sistema obliga a cambiarla.
 - **Plan gratuito:** Render apaga el servicio tras 15 minutos sin uso; la primera visita tarda cerca de un minuto.
 - **Despliegue automático solo si las pruebas pasan:** en Render, `autoDeploy` está desactivado. Para que el pipeline despliegue, se copia el *Deploy Hook* de cada servicio (Settings → Deploy Hook) al secreto `FS_DEPLOY_HOOK` del repositorio correspondiente.
