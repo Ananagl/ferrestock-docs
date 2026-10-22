@@ -28,7 +28,19 @@ pre { font-family: Menlo, monospace; font-size:8.2pt; background:#faf8f5; border
 <h2>1. Qué es FerreStock en una frase</h2>
 <p>Es un sistema web de inventario para una ferretería. Registra productos, clientes y proveedores, compras, ventas con pago en efectivo, devoluciones y ajustes. Lleva el <b>kardex</b> y el <b>costo promedio ponderado (CPP)</b> y emite comprobantes simulados. Tiene dos roles: <b>Administrador</b> (todo) y <b>Operativo</b> (vende, compra y devuelve, pero no ve costos, ajustes, usuarios ni auditoría).</p>
 
-<h2>2. Cómo está montado</h2>
+<h2>2. Cómo se construyó: IA utilizada y fases</h2>
+<p><b>IA utilizada:</b> <b>Claude</b>, de Anthropic (modelo Claude Opus 5.5), a través de <b>Claude Code</b> en la app de escritorio. Funcionó como un equipo de ingeniería: redactó la documentación, propuso el diseño, programó backend y frontend, escribió y corrió las pruebas, configuró el CI/CD y el despliegue. <b>Nosotras/os definimos las decisiones y aprobamos cada fase</b> antes de avanzar. Los prompts usados están en <code>docs/prompts/FerreStock_prompts_de_ingenieria.pdf</code>.</p>
+<table>
+<tr><th style="width:20%">Fase</th><th style="width:45%">Qué se hizo</th><th>Dónde está</th></tr>
+<tr><td>1 · Análisis</td><td>Visión y alcance, requisitos RF/RNF, reglas de negocio, casos de uso, permisos por rol, escenarios de aceptación, riesgos y trazabilidad</td><td><code>docs/fase-1-analisis</code> (9 documentos)</td></tr>
+<tr><td>2 · Diseño</td><td>Arquitectura, modelo de datos (ER), inventario y costos, API REST, seguridad, frontend, flujos críticos, entrega y 19 decisiones técnicas (ADR)</td><td><code>docs/fase-2-diseno</code></td></tr>
+<tr><td>3 · Preparación</td><td>Repositorios, base técnica del backend y del frontend, scripts de BD y verificación de encabezados</td><td><code>docs/fase-3-preparacion</code></td></tr>
+<tr><td>4 · Implementación</td><td>11 incrementos: autenticación, usuarios, catálogo, terceros, inventario, ajustes, compras, ventas, devoluciones, comprobantes y auditoría</td><td><code>docs/fase-4-implementacion</code> (un informe por incremento)</td></tr>
+<tr><td>5 · Pruebas</td><td>Unitarias, integración, seguridad, estrés, mutación, E2E, compatibilidad y carga; catálogo de 220 casos</td><td><code>docs/fase-5-pruebas</code></td></tr>
+<tr><td>6 · CI/CD y despliegue</td><td>GitHub Actions, reporte automático en Taiga, Docker, Render y Neon</td><td><code>docs/fase-6-cicd</code></td></tr>
+<tr><td>7 · Métricas y monitoreo</td><td>Métricas del equipo desde Taiga y monitoreo de errores con reporte automático</td><td><code>docs/fase-7-metricas</code></td></tr>
+</table>
+<h2>3. Cómo está montado</h2>
 <pre>Navegador
   └─► Frontend: React servido por nginx (Render)     ferrestock-wtrq.onrender.com
         └─ /api ─► Backend: Spring Boot en Docker (Render)
@@ -39,7 +51,7 @@ pre { font-family: Menlo, monospace; font-size:8.2pt; background:#faf8f5; border
 <li><b>Tres repositorios:</b> backend, frontend y docs. Ramas <code>main</code> (lo desplegable), <code>develop</code> (integración) y <code>feature/*</code> (una por incremento); commits en formato Conventional Commits en español.</li>
 </ul>
 
-<h2>3. Tecnologías y para qué sirve cada una</h2>
+<h2>4. Tecnologías y para qué sirve cada una</h2>
 <table>
 <tr><th style="width:17%">Capa</th><th style="width:33%">Tecnología</th><th>Para qué la usamos</th></tr>
 <tr><td>Backend</td><td>Java 21, Spring Boot 3.5, Maven</td><td>API REST <code>/api/v1/...</code>; Spring Web, Security, Data JPA, Validation, Actuator (salud)</td></tr>
@@ -53,8 +65,7 @@ pre { font-family: Menlo, monospace; font-size:8.2pt; background:#faf8f5; border
 <tr><td>Entrega</td><td>GitHub Actions · Docker · Render · Taiga</td><td>CI/CD; imagen de cada servicio; hosting; issues, tareas y métricas del equipo</td></tr>
 </table>
 
-<div class="salto"></div>
-<h2>4. Backend: cómo está organizado</h2>
+<h2>5. Backend: cómo está organizado</h2>
 <ul>
 <li><b>Paquetes por módulo</b> (<code>com.ferrestock.&lt;modulo&gt;</code>): autenticacion, usuarios, catalogo, terceros, inventario, ajustes, compras, ventas, devoluciones, comprobantes, auditoria y monitoreo, más <code>compartido</code> (errores, montos, seguridad) y <code>configuracion</code>.</li>
 <li><b>Capas:</b> <code>Controller</code> (HTTP y permisos con <code>@PreAuthorize</code>) → <code>Service</code> (reglas de negocio y transacciones) → <code>Repository</code> (JPA). Los DTO de entrada se validan con anotaciones (<code>@NotBlank</code>, <code>@Digits</code>…) y mensajes traducidos.</li>
@@ -84,7 +95,7 @@ pre { font-family: Menlo, monospace; font-size:8.2pt; background:#faf8f5; border
 </table>
 
 <div class="salto"></div>
-<h2>5. Frontend: cómo está organizado</h2>
+<h2>6. Frontend: cómo está organizado</h2>
 <div class="dos"><div>
 <ul>
 <li><code>src/modulos/&lt;modulo&gt;/</code> con <code>servicios</code> (llamadas a la API), <code>paginas</code>, <code>componentes</code> y <code>validacion</code> (esquemas Yup).</li>
@@ -99,14 +110,14 @@ pre { font-family: Menlo, monospace; font-size:8.2pt; background:#faf8f5; border
 <li><b>Tokens de diseño</b> y tema claro/oscuro; JSDoc en cada archivo.</li>
 </ul></div></div>
 
-<h2>6. Base de datos</h2>
+<h2>7. Base de datos</h2>
 <ul>
 <li>14 tablas: usuario, categoria, producto, tercero, compra(+linea), venta(+linea), devolucion(+linea), ajuste, movimiento_inventario (kardex), consecutivo, auditoria, registro_error y persistent_logins.</li>
 <li><b>Las reglas también viven en la base:</b> <code>CHECK</code> (existencias ≥ 0, cambio = recibido − total, motivo obligatorio si está anulada), <code>UNIQUE</code> (código de producto, documento del tercero, un producto por línea), claves foráneas y triggers de inmutabilidad.</li>
 <li>Hibernate solo <b>valida</b> el esquema (<code>ddl-auto=validate</code>); el esquema lo crean los scripts SQL. En local: <code>db/crear_bd.sh</code>. En la nube: <code>db/inicializar_remota.sh</code> (así se inicializó Neon).</li>
 </ul>
 
-<h2>7. Cómo se hicieron las pruebas</h2>
+<h2>8. Cómo se hicieron las pruebas</h2>
 <table>
 <tr><th style="width:20%">Tipo</th><th style="width:44%">Qué se probó</th><th>Resultado real</th></tr>
 <tr><td>Unitarias</td><td>Reglas de servicios con Mockito, cálculo del CPP, validador de NIT (módulo 11), contraseñas</td><td>75 pasan</td></tr>
@@ -124,7 +135,7 @@ npm test && npx playwright test    # frontend: lint, i18n y E2E
 scripts/compilar_y_probar.sh       # todo el sistema</pre>
 
 <div class="salto"></div>
-<h2>8. CI/CD y Taiga</h2>
+<h2>9. CI/CD y Taiga</h2>
 <pre>push o pull request a develop / main  ─►  GitHub Actions
   ├─ backend:  encabezados → unitarias + integración (PostgreSQL) → cobertura
   │            en main además: mutación → imagen Docker → despliegue → salud
@@ -141,33 +152,33 @@ scripts/compilar_y_probar.sh       # todo el sistema</pre>
 <li><b>El CI sí encontró errores reales:</b> el nombre de la imagen de Docker debía ir en minúsculas, y en móvil faltaba que la tabla del comprobante fuera accesible con teclado. Ambos se corrigieron en la v1.0.2.</li>
 </ul>
 
-<h2>9. Métricas y monitoreo</h2>
+<h2>10. Métricas y monitoreo</h2>
 <ul>
 <li><b>Del equipo</b> (<code>scripts/metricas/metricas_taiga.py</code>, lee el Taiga real): avance del tablero (hoy 93 %), tareas e issues abiertos y cerrados por integrante, horas promedio de resolución, fallos de CI y errores de producción.</li>
 <li><b>De la aplicación:</b> cada error 500 queda en <code>registro_error</code> con su correlación. Si el mismo error ocurre <b>5 veces en 10 minutos</b> en la misma ruta, el backend crea solo <b>un</b> issue "[Producción]" en Taiga. El ADMIN consulta <code>/api/v1/monitoreo/errores</code> y <code>/monitoreo/metricas</code> (ventas del día, anulaciones, productos sin existencias, valor del inventario, errores y accesos denegados).</li>
 </ul>
 
 <div class="salto"></div>
-<h2>10. Requisitos del enunciado y dónde se cumplen</h2>
+<h2>11. Requisitos del enunciado y dónde se cumplen</h2>
 <table>
 <tr><th style="width:26%">Requisito</th><th>Cómo se cumple / dónde mostrarlo</th></tr>
 <tr><td>Java, Spring Boot, JPA, Lombok</td><td>Repositorio backend; entidades en <code>*/entidad</code>, repositorios JPA, Lombok en entidades y servicios</td></tr>
 <tr><td>Validaciones</td><td>Bean Validation en DTO + reglas en servicios + <code>CHECK</code> en BD + Yup en el frontend</td></tr>
-<tr><td>Seguridad y autenticación</td><td>Spring Security: sesión, Recordarme, CSRF, roles, bloqueo y auditoría (sección 4)</td></tr>
+<tr><td>Seguridad y autenticación</td><td>Spring Security: sesión, Recordarme, CSRF, roles, bloqueo y auditoría (sección 5)</td></tr>
 <tr><td>Javadoc, OpenAPI, JSON</td><td><code>mvn javadoc:javadoc</code>; Swagger en el perfil dev; respuestas JSON y ProblemDetail</td></tr>
 <tr><td>i18n</td><td>Backend: <code>mensajes.properties</code> es/en según <code>Accept-Language</code>. Frontend: selector de idioma</td></tr>
 <tr><td>Encabezados de archivos</td><td>En todos los archivos; verificados por script en el CI</td></tr>
 <tr><td>React, MUI, responsive, accesible</td><td>Tablas que pasan a tarjetas en móvil; axe sin violaciones; tema claro/oscuro</td></tr>
 <tr><td>Tokens de diseño, Formik, Yup, JSDoc</td><td><code>src/app/tema</code> (tokens), formularios con Formik + Yup, JSDoc en cada componente</td></tr>
 <tr><td>Sesión persistente</td><td>"Recordarme" 7 días; la sesión se restaura al recargar</td></tr>
-<tr><td>Pruebas (todos los tipos)</td><td>Sección 7; catálogo de 220 casos; informe en <code>docs/fase-5-pruebas</code></td></tr>
+<tr><td>Pruebas (todos los tipos)</td><td>Sección 8; catálogo de 220 casos; informe en <code>docs/fase-5-pruebas</code></td></tr>
 <tr><td>Scripts de BD, compilación y repositorio</td><td><code>db/*.sh</code>, <code>scripts/*.sh</code> del backend, <code>scripts/repositorio</code> y <code>compilar_y_probar.sh</code></td></tr>
-<tr><td>CI/CD: desplegar si pasa; si falla, issues, tareas y notificación en Taiga</td><td>Sección 8; evidencia: issue #85 y la historia "Fallos de CI"</td></tr>
-<tr><td>Métricas y monitoreo en Taiga</td><td>Sección 9; <code>docs/fase-7-metricas</code></td></tr>
+<tr><td>CI/CD: desplegar si pasa; si falla, issues, tareas y notificación en Taiga</td><td>Sección 9; evidencia: issue #85 y la historia "Fallos de CI"</td></tr>
+<tr><td>Métricas y monitoreo en Taiga</td><td>Sección 10; <code>docs/fase-7-metricas</code></td></tr>
 <tr><td>Documentación por fases</td><td>Repositorio docs: fases 1 a 7, ADRs, informes por incremento, PDF de prompts</td></tr>
 </table>
 
-<h2>11. Guion sugerido para la demo (10 minutos)</h2>
+<h2>12. Guion sugerido para la demo (10 minutos)</h2>
 <ol>
 <li>Abrir el sistema (1 minuto antes, por el plan gratis) → entrar como <b>admin</b> → cambiar de idioma y de tema.</li>
 <li><b>Ajuste</b> de inventario inicial (20 a $400) → <b>compra</b> (10 a $550) → mostrar el kardex con <b>CPP $450</b>.</li>
